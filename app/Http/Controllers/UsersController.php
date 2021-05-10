@@ -7,8 +7,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
+/**
+ * [API]ユーザー情報API class
+ * 
+ * ユーザー情報に関するコントローラー
+ * ユーザー情報の取得、新規会員登録
+ * 
+ * @access public
+ * @author Nakanishi Yukina
+ * @category User
+ * @package Controller
+ */
+
 class UsersController extends Controller
 {
+    /**
+     * [getメソッド]ユーザー情報の取得
+     *
+     *　入力値（メールアドレス、パスワ ード）から
+     *  ユーザー情報を取得する
+     * 
+     * @access public
+     * @param Request $request    $request メールアドレス、パスワード（入力値）
+     * @return Response ユーザー情報の取得、ない場合は404で返す
+     */
     public function get(Request $request)
     {
         if ($request->has("email")) {
@@ -22,8 +44,23 @@ class UsersController extends Controller
             ], 404);
         }
     }
+    /**
+     * [postメソッド]新規会員登録
+     *
+     *　リクエストで送られてきた情報を
+     *  usersデータベースに登録する
+     * 
+     * @access public
+     * @param Request $request  名前、メールアドレス、パスワード（入力値）
+     * @return Response  会員登録
+     */
     public function post(Request $request)
     {
+        /**
+         * @var timestamps $now  登録日時
+         * @var string $hashed_password  ハッシュしたパスワード
+         * @var array $param  新規レコード
+         */
         $now = Carbon::now();
         $hashed_password = Hash::make($request->password);
 
