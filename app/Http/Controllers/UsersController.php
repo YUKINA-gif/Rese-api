@@ -12,14 +12,14 @@ class UsersController extends Controller
     public function get(Request $request)
     {
         if ($request->has("email")) {
-            User::where("email",$request->email)->get();
+            User::where("email", $request->email)->get();
             return response()->json([
                 "message" => "User got successfully"
-            ],200);
+            ], 200);
         } else {
             return response()->json([
                 "status" => "not found"
-            ],404);
+            ], 404);
         }
     }
     public function post(Request $request)

@@ -27,14 +27,14 @@ class BookingController extends Controller
 
         return response()->json([
             "message" => "Booking successfully"
-        ],200);
+        ], 200);
     }
     public function delete(Request $request)
     {
-        Booking::where("user_id",$request->user_id)->where("booking_id",$request->booking_id)->delete();
+        Booking::where("user_id", $request->user_id)->where("booking_id", $request->booking_id)->delete();
 
         return response()->json([
             "message" => "Booking deleted successfully"
-        ],200);
+        ], 200);
     }
 }

@@ -17,7 +17,7 @@ class StoresController extends Controller
         $stores = Store::all();
         return response()->json([
             "store" => $stores
-        ],200);
+        ], 200);
     }
 
     /**
@@ -39,7 +39,7 @@ class StoresController extends Controller
      */
     public function show(Store $store)
     {
-        $store = Store::where("id",$store->store_id)->first();
+        $store = Store::where("id", $store->store_id)->first();
     }
 
     /**
