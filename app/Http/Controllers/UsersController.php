@@ -22,7 +22,7 @@ use Carbon\Carbon;
 class UsersController extends Controller
 {
     /**
-     * [getメソッド]ユーザー情報の取得
+     * [GET]ユーザー情報の取得
      *
      *　入力値（メールアドレス、パスワ ード）から
      *  ユーザー情報を取得する
@@ -45,7 +45,7 @@ class UsersController extends Controller
         }
     }
     /**
-     * [postメソッド]新規会員登録
+     * [POST]新規会員登録
      *
      *　リクエストで送られてきた情報を
      *  usersデータベースに登録する
@@ -79,7 +79,7 @@ class UsersController extends Controller
         ], 200);
     }
     /**
-     * [favoritesメソッド]お気に入り店舗一覧取得
+     * [GET]お気に入り店舗一覧取得
      *
      *　送られてきたユーザーIDから
      *  お気に入り一覧を取得する
@@ -100,7 +100,7 @@ class UsersController extends Controller
         ], 200);
     }
     /**
-     * [bookingsメソッド]予約一覧取得
+     * [GET]予約一覧取得
      *
      *　送られてきたユーザーIDから
      *  予約一覧を取得する

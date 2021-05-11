@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 class LogoutController extends Controller
 {
     /**
-     * [postメソッド]ログアウト機能
+     * [POST]ログアウト機能
      * 
      * ログアウトをする
      * 

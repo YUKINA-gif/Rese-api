@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     /**
-     * [postメソッド]ログイン操作
+     * [POST]ログイン操作
      * 
      * 入力値からusersデータベース情報と比較し
      * ログイン可能かどうか確かめる

@@ -6,8 +6,28 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use Carbon\Carbon;
 
+/**
+ * [API]予約機能API class
+ * 
+ * 予約機能に関するコントローラー
+ * 予約の登録、更新、削除
+ * 
+ * @access public
+ * @author Nakanishi Yukina
+ * @category Booking
+ * @package Controller
+ */
 class BookingController extends Controller
 {
+    /**
+     * [POST]予約登録
+     * 
+     * 予約の登録をする
+     * 
+     * @access public
+     * @param Request $request 
+     * @return Response 
+     */
     public function post(Request $request)
     {
         $now = Carbon::now();
