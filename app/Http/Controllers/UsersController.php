@@ -78,16 +78,42 @@ class UsersController extends Controller
             'message' => 'User created successfully'
         ], 200);
     }
+    /**
+     * [favoritesメソッド]お気に入り店舗一覧取得
+     *
+     *　送られてきたユーザーIDから
+     *  お気に入り一覧を取得する
+     * 
+     * @access public
+     * @param Request $request  ユーザーID（入力値）
+     * @return Response  お気に入り店舗一覧表示
+     */
     public function favorites(Request $request)
     {
+        /** 
+         * @var array $data ユーザーIDからお気に入り店舗を探す
+         */
         $data = User::find($request->user_id)->favorites;
 
         return response()->json([
             "data" => $data
         ], 200);
     }
+    /**
+     * [bookingsメソッド]予約一覧取得
+     *
+     *　送られてきたユーザーIDから
+     *  予約一覧を取得する
+     * 
+     * @access public
+     * @param Request $request  ユーザーID（入力値）
+     * @return Response  予約一覧表示
+     */
     public function bookings(Request $request)
     {
+        /** 
+         * @var array $data ユーザーIDから予約一覧を探す
+         */
         $data = User::find($request->user_id)->bookings;
 
         return response()->json([
