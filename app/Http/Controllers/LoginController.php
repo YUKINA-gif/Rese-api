@@ -6,10 +6,33 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * [API]ログインAPI class
+ * 
+ * ログインに関するコントローラー
+ * 
+ * @access public
+ * @author Nakanishi Yukina
+ * @category Login
+ * @package Controller
+ */
 class LoginController extends Controller
 {
+    /**
+     * [postメソッド]ログイン操作
+     * 
+     * 入力値からusersデータベース情報と比較し
+     * ログイン可能かどうか確かめる
+     * 
+     * @access public
+     * @param Request $request メールアドレス,パスワード(入力値)
+     * @return Response ログイン可もしくは不可
+     */
     public function post(Request $request)
     {
+        /**
+         * @var  $items  メールアドレス(入力値)からデータベース内のユーザー情報を探す
+         */
         $items = User::where('email', $request->email)->first();
         if (Hash::check($request->password, $items->password)) {
             return response()->json([
