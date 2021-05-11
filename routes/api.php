@@ -30,6 +30,7 @@ Route::post("/login", [LoginController::class, "post"]);
 Route::post("/logout", [LogoutController::class, "post"]);
 Route::get("/user/{user_id}/favorite", [UsersController::class, "favorites"]);
 Route::post("/favorite", [FavoritesController::class, "post"]);
+Route::put("/favorite", [FavoritesController::class, "restore"]);
 Route::delete("/favorite", [FavoritesController::class, "delete"]);
 Route::get("/user/{user_id}/booking", [UsersController::class, "bookings"]);
 Route::post("/booking", [BookingController::class, "post"]);

@@ -75,7 +75,7 @@ class BookingController extends Controller
     /**
      * [DELETE]予約更新
      * 
-     * 予約内容の削除をする
+     * 予約の削除をする
      * 
      * @access public
      * @param Request $request リクエストパラメーター

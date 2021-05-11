@@ -6,8 +6,30 @@ use Illuminate\Http\Request;
 use App\Models\Favorite;
 use Carbon\Carbon;
 
+/**
+ * [API]お気に入り機能API class
+ * 
+ * お気に入り機能に関するコントローラー
+ * お気に入りの登録、更新、削除
+ * 
+ * @access public
+ * @author Nakanishi Yukina
+ * @category Favorite
+ * @package Controller
+ */
 class FavoritesController extends Controller
 {
+    /**
+     * [POST]お気に入り登録
+     * 
+     * すでにお気に入り登録されている場合は削除する
+     * 
+     * @access public
+     * @param Request $request リクエストパラメーター
+     * @return Response お気に入り登録
+     * @var timestamps $now  登録日時
+     * @var array $favorite  新規レコード
+     */
     public function post(Request $request)
     {
         $now = Carbon::now();
@@ -23,6 +45,32 @@ class FavoritesController extends Controller
             "message" => "Favorite created successfully"
         ], 200);
     }
+    /**
+     * [PUT]お気に入り削除を復元
+     * 
+     * お気に入り削除していたデータを復元する
+     * 
+     * @access public
+     * @param Request $request リクエストパラメーター
+     * @return Response お気に入り削除分を復元
+     */
+    public function restore(Request $request)
+    {
+        Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->restore();
+        return response()->json([
+            "message" => "Favorite restored successfully"
+        ], 200);
+    }
+    /**
+     * [DELETE]お気に入り削除
+     * 
+     * お気に入り登録している店舗を削除する
+     * ソフトデリートのためデータベースにデータは残る
+     * 
+     * @access public
+     * @param Request $request リクエストパラメーター
+     * @return Response お気に入り削除
+     */
     public function delete(Request $request)
     {
         Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->delete();
