@@ -64,7 +64,19 @@ class BookingController extends Controller
      */
     public function put(Request $request)
     {
+        /**
+         * @var array $param  更新希望日時、人数 
+         */
+        $param = [
+            "booking_date" => $request->booking_date,
+            "booking_time" => $request->booking_time,
+            "booking_number" => $request->booking_number,
+        ];
+        Booking::where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
 
+        return response()->json([
+            "message" => "Booking updated successfully"
+        ], 200);
     }
     /**
      * [DELETE]予約更新

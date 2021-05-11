@@ -31,7 +31,7 @@ class LoginController extends Controller
     public function post(Request $request)
     {
         /**
-         * @var  $items  メールアドレス(入力値)からデータベース内のユーザー情報を探す
+         * @var object $items  メールアドレス(入力値)からデータベース内のユーザー情報を探す
          */
         $items = User::where('email', $request->email)->first();
         if (Hash::check($request->password, $items->password)) {

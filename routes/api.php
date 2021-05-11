@@ -33,4 +33,5 @@ Route::post("/favorite", [FavoritesController::class, "post"]);
 Route::delete("/favorite", [FavoritesController::class, "delete"]);
 Route::get("/user/{user_id}/booking", [UsersController::class, "bookings"]);
 Route::post("/booking", [BookingController::class, "post"]);
+Route::put("/booking", [BookingController::class, "put"]);
 Route::delete("/booking", [BookingController::class, "delete"]);
