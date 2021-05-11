@@ -19,7 +19,6 @@ class FavoritesController extends Controller
             "created_at" => $now,
             "updated_at" => $now
         ])->save();
-
         return response()->json([
             "message" => "Favorite created successfully"
         ], 200);
@@ -27,7 +26,6 @@ class FavoritesController extends Controller
     public function delete(Request $request)
     {
         Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->delete();
-
         return response()->json([
             "message" => "Favorite deleted successfully"
         ], 200);

@@ -53,18 +53,16 @@ class UsersController extends Controller
      * @access public
      * @param Request $request  リクエストパラメーター
      * @return Response  会員登録
+     * @var timestamps $now  登録日時
+     * @var string $hashed_password  ハッシュしたパスワード
+     * @var array $param  新規レコード
      */
     public function post(Request $request)
     {
-        /**
-         * @var timestamps $now  登録日時
-         * @var string $hashed_password  ハッシュしたパスワード
-         * @var array $param  新規レコード
-         */
         $now = Carbon::now();
         $hashed_password = Hash::make($request->password);
-
         $param = new User;
+
         $param->fill([
             "name" => $request->name,
             "email" => $request->email,
@@ -73,7 +71,6 @@ class UsersController extends Controller
             "updated_at" => $now,
         ]);
         $param->save();
-
         return response()->json([
             'message' => 'User created successfully'
         ], 200);
@@ -87,14 +84,11 @@ class UsersController extends Controller
      * @access public
      * @param Request $request  リクエストパラメーター
      * @return Response  お気に入り店舗一覧表示
+     * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す
      */
     public function favorites(Request $request)
     {
-        /** 
-         * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す
-         */
         $data = User::find($request->user_id)->favorites;
-
         return response()->json([
             "data" => $data
         ], 200);
@@ -108,14 +102,11 @@ class UsersController extends Controller
      * @access public
      * @param Request $request  リクエストパラメーター
      * @return Response  予約一覧表示
+     * @var array $data ユーザーID(リクエスト)から予約一覧を探す
      */
     public function bookings(Request $request)
     {
-        /** 
-         * @var array $data ユーザーID(リクエスト)から予約一覧を探す
-         */
         $data = User::find($request->user_id)->bookings;
-
         return response()->json([
             "data" => $data
         ], 200);

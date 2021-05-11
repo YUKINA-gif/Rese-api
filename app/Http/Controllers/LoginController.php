@@ -27,12 +27,10 @@ class LoginController extends Controller
      * @access public
      * @param Request $request リクエストパラメーター
      * @return Response ログイン可もしくは不可
+     * @var object $items  メールアドレス(入力値)からデータベース内のユーザー情報を探す
      */
     public function post(Request $request)
     {
-        /**
-         * @var object $items  メールアドレス(入力値)からデータベース内のユーザー情報を探す
-         */
         $items = User::where('email', $request->email)->first();
         if (Hash::check($request->password, $items->password)) {
             return response()->json([

@@ -27,13 +27,11 @@ class BookingController extends Controller
      * @access public
      * @param Request $request リクエストパラメーター
      * @return Response 予約登録
+     * @var timestamps $now  登録日時
+     * @var array $booking  新規レコード
      */
     public function post(Request $request)
     {
-        /**
-         * @var timestamps $now  登録日時
-         * @var array $booking  新規レコード
-         */
         $now = Carbon::now();
         $booking = new Booking;
 
@@ -48,7 +46,6 @@ class BookingController extends Controller
         ]);
 
         $booking->save();
-
         return response()->json([
             "message" => "Booking successfully"
         ], 200);
@@ -61,19 +58,16 @@ class BookingController extends Controller
      * @access public
      * @param Request $request リクエストパラメーター
      * @return Response 予約更新
+     * @var array $param  更新希望日時、人数 
      */
     public function put(Request $request)
     {
-        /**
-         * @var array $param  更新希望日時、人数 
-         */
         $param = [
             "booking_date" => $request->booking_date,
             "booking_time" => $request->booking_time,
             "booking_number" => $request->booking_number,
         ];
         Booking::where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
-
         return response()->json([
             "message" => "Booking updated successfully"
         ], 200);
@@ -90,7 +84,6 @@ class BookingController extends Controller
     public function delete(Request $request)
     {
         Booking::where("user_id", $request->user_id)->where("booking_id", $request->booking_id)->delete();
-
         return response()->json([
             "message" => "Booking deleted successfully"
         ], 200);
