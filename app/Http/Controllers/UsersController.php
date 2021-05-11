@@ -28,8 +28,8 @@ class UsersController extends Controller
      *  ユーザー情報を取得する
      * 
      * @access public
-     * @param Request $request    $request メールアドレス、パスワード（入力値）
-     * @return Response ユーザー情報の取得、ない場合は404で返す
+     * @param Request $request  リクエストパラメーター
+     * @return Response  ユーザー情報の取得、ない場合は404で返す
      */
     public function get(Request $request)
     {
@@ -51,7 +51,7 @@ class UsersController extends Controller
      *  usersデータベースに登録する
      * 
      * @access public
-     * @param Request $request  名前、メールアドレス、パスワード（入力値）
+     * @param Request $request  リクエストパラメーター
      * @return Response  会員登録
      */
     public function post(Request $request)
@@ -81,17 +81,17 @@ class UsersController extends Controller
     /**
      * [GET]お気に入り店舗一覧取得
      *
-     *　送られてきたユーザーIDから
+     *　ユーザーID(リクエスト)から
      *  お気に入り一覧を取得する
      * 
      * @access public
-     * @param Request $request  ユーザーID（入力値）
+     * @param Request $request  リクエストパラメーター
      * @return Response  お気に入り店舗一覧表示
      */
     public function favorites(Request $request)
     {
         /** 
-         * @var array $data ユーザーIDからお気に入り店舗を探す
+         * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す
          */
         $data = User::find($request->user_id)->favorites;
 
@@ -102,17 +102,17 @@ class UsersController extends Controller
     /**
      * [GET]予約一覧取得
      *
-     *　送られてきたユーザーIDから
+     *　ユーザーID(リクエスト)から
      *  予約一覧を取得する
      * 
      * @access public
-     * @param Request $request  ユーザーID（入力値）
+     * @param Request $request  リクエストパラメーター
      * @return Response  予約一覧表示
      */
     public function bookings(Request $request)
     {
         /** 
-         * @var array $data ユーザーIDから予約一覧を探す
+         * @var array $data ユーザーID(リクエスト)から予約一覧を探す
          */
         $data = User::find($request->user_id)->bookings;
 

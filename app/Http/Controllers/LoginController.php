@@ -25,7 +25,7 @@ class LoginController extends Controller
      * ログイン可能かどうか確かめる
      * 
      * @access public
-     * @param Request $request メールアドレス,パスワード(入力値)
+     * @param Request $request リクエストパラメーター
      * @return Response ログイン可もしくは不可
      */
     public function post(Request $request)
