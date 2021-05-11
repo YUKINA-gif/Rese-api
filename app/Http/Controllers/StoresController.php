@@ -5,12 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Store;
 use Illuminate\Http\Request;
 
+/**
+ * [API]店舗情報取得 class
+ * 
+ * 店舗情報取得に関するコントローラー
+ * 店舗一覧取得、店舗詳細データ取得
+ * 
+ * @access public
+ * @author Nakanishi Yukina
+ * @category Store
+ * @package Controller
+ */
 class StoresController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * [GET]店舗一覧取得
+     * 
+     * 店舗全データを取得する
+     * 
+     * @access public
+     * @return Response 店舗一覧表示
+     * @var array $stores  店舗全データ
      */
     public function index()
     {
@@ -32,10 +47,13 @@ class StoresController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
+     * [GET]店舗詳細データ取得
+     * 
+     * 店舗詳細データを取得する
+     * 
+     * @access public
+     * @return Response 店舗詳細データ表示
+     * @var array $store  店舗詳細データ
      */
     public function show(Store $store)
     {
