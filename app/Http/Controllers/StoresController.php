@@ -57,7 +57,17 @@ class StoresController extends Controller
      */
     public function show(Store $store)
     {
-        $store = Store::where("id", $store->store_id)->first();
+        $store = Store::where("id", $store->id)->first();
+        if ($store) {
+            return response()->json([
+                'message' => 'OK',
+                'data' => $store
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Not found',
+            ], 404);
+        }
     }
 
     /**
