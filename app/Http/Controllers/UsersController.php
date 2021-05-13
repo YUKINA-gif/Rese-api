@@ -40,7 +40,7 @@ class UsersController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "status" => "not found"
+                "status" => "Not found"
             ], 404);
         }
     }

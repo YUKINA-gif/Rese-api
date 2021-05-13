@@ -61,7 +61,7 @@ class StoresController extends Controller
         if ($store) {
             return response()->json([
                 'message' => 'OK',
-                'data' => $store
+                'store' => $store
             ], 200);
         } else {
             return response()->json([
