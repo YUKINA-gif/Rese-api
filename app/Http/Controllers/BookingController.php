@@ -10,7 +10,7 @@ use Carbon\Carbon;
  * [API]予約機能API class
  * 
  * 予約機能に関するコントローラー
- * 予約の登録、更新、削除
+ * 予約の登録、更新、取消
  * 
  * @access public
  * @author Nakanishi Yukina
@@ -25,7 +25,7 @@ class BookingController extends Controller
      * 予約の登録をする
      * 
      * @access public
-     * @param Request $request リクエストパラメーター
+     * @param Request $request リクエストパラメータ
      * @return Response 予約登録
      * @var timestamps $now  登録日時
      * @var array $booking  新規レコード
@@ -56,7 +56,7 @@ class BookingController extends Controller
      * 予約内容の更新をする
      * 
      * @access public
-     * @param Request $request リクエストパラメーター
+     * @param Request $request リクエストパラメータ
      * @return Response 予約更新
      * @var array $param  更新希望日時、人数 
      */
@@ -73,13 +73,13 @@ class BookingController extends Controller
         ], 200);
     }
     /**
-     * [DELETE]予約更新
+     * [DELETE]予約取消
      * 
-     * 予約の削除をする
+     * 予約の取消をする
      * 
      * @access public
-     * @param Request $request リクエストパラメーター
-     * @return Response 予約削除
+     * @param Request $request リクエストパラメータ
+     * @return Response 予約取消
      */
     public function delete(Request $request)
     {

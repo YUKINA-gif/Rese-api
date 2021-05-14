@@ -24,7 +24,7 @@ class BookingFactory extends Factory
     {
         return [
             "store_id" => $this->faker->numberBetween($min = 1, $max = 21),
-            "user_id" => $this->faker->numberBetween($min = 1, $max = 30),
+            "user_id" => $this->faker->numberBetween($min = 1, $max = 20),
             "booking_date" => $this->faker->dateTimeBetween($startDate = "now",$endDate = "+1 month"),
             "booking_time" => $this->faker->time(),
             "booking_number" => $this->faker->randomDigit()

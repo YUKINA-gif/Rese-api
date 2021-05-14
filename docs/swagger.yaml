@@ -1,0 +1,500 @@
+swagger: "2.0"
+info:
+  description: "これはReseサイトに関するAPIドキュメントです"
+  version: "1.0.0"
+  title: "Rese API"
+tags:
+- name: "Users"
+  description: "ユーザに関する操作"
+- name: "Stores"
+  description: "店舗に関する操作"
+- name: "Login"
+  description: "ログインに関する操作"
+- name: "Logout"
+  description: "ログアウトに関する操作"
+- name: "Favorite"
+  description: "お気に入りに関する操作"
+- name: "Booking"
+  description: "予約に関する操作"
+
+paths:
+  /user:
+    get:
+      tags:
+      - "Users"
+      summary: "ユーザー情報"
+      description: "ユーザー情報を取得します"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      operationId: "getUser"
+      parameters:
+      - in: "query"
+        name: "email"
+        type: "string"
+        description: "メールアドレス"
+        required: true
+      - in: "query"
+        name: "password"
+        type: "string"
+        description: "パスワード"
+        required: true
+      responses:
+        "200":
+          description: "ユーザー情報取得完了"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "User got successfully"
+        "404":
+          description: "ユーザー情報がありません"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "Not found"
+    post:
+      tags:
+      - "Users"
+      summary: "新規会員登録"
+      description: "新規会員登録をします"
+      operationId: "register"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "ユーザー名"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              example: "username"
+            email:
+              type: "string"
+              example: "email@email.com"
+            password:
+              type: "string"
+              example: "password"
+      responses:
+        "200":
+          description: "新規会員登録完了"
+          schema:
+            properties:
+              message:
+                type: "string"
+                example: "User created successfully"
+          
+  /user/{user_id}/favorite:
+    get:
+      tags:
+      - "Users"
+      summary: "ユーザーお気に入り店舗一覧表示"
+      description: "ユーザーが登録しているお気に入り店舗の一覧を表示します"
+      operationId: "getFavorite"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "user_id"
+        type: "number"
+        description: "ユーザー番号"
+        required: true
+      responses:
+        "200":
+          description: "ユーザーお気に入り店舗取得完了"
+          schema:
+            example:
+              - id: "1" 
+                user_id: "1"
+                store_id: "1"
+                is_favorite: 
+                created_at: "2021-05-11T11:12:30.000000Z"
+                updated_at: "2021-05-11T11:12:30.000000Z"
+              - id: "2" 
+                user_id: "1"
+                store_id: "2"
+                is_favorite: "2021-05-13 05:30:30"
+                created_at: "2021-05-12T11:08:00.000000Z"
+                updated_at: "2021-05-12T11:08:00.000000Z"
+  /user/{user_id}/booking:
+    get:
+      tags:
+      - "Users"
+      summary: "ユーザー予約情報一覧表示"
+      description: "ユーザーの予約情報一覧を表示します"
+      operationId: "getBooking"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "user_id"
+        type: "number"
+        description: "ユーザー番号"
+        required: true
+      responses:
+        "200":
+          description: "ユーザー予約情報取得完了"
+          schema:
+            example:
+              - id: "1" 
+                user_id: "1"
+                store_id: "1"
+                booking_date: "2021-05-20"
+                booking_time: "18:00:00"
+                booking_number: "2" 
+                created_at: "2021-05-11T11:12:30.000000Z"
+                updated_at: "2021-05-11T11:12:30.000000Z"
+              - id: "2" 
+                user_id: "1"
+                store_id: "2"
+                booking_date: "2021-05-25"
+                booking_time: "20:00:00"
+                booking_number: "4" 
+                created_at: "2021-05-12T11:08:00.000000Z"
+                updated_at: "2021-05-12T11:08:00.000000Z"
+  /stores:
+    get:
+      tags:
+      - "Stores"
+      summary: "店舗一覧データ表示"
+      description: "店舗の一覧を表示します"
+      operationId: "getStores"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "店舗全データを取得し表示する"
+          schema:
+            example:
+              store:
+              - id: "1"
+                area_id: "1"
+                genre_id: "1"
+                name: "仙人"
+                overview: "料理長厳選の食材から作る寿司を用いたコースをぜひお楽しみください。食材・味・価格、お客様の満足度を徹底的に追及したお店です。特別な日のお食事、ビジネス接待まで気軽に使用することができます。"
+                image: "https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg"
+                created_at: "2021-05-12T11:08:00.000000Z"
+                updated_at: "2021-05-12T11:08:00.000000Z"
+              - id: "2"
+                area_id: "2"
+                genre_id: "2"
+                name: "牛助"
+                overview: "焼肉業界で20年間経験を積み、肉を熟知したマスターによる実力派焼肉店。長年の実績とお付き合いをもとに、なかなか食べられない希少部位も仕入れております。また、ゆったりとくつろげる空間はお仕事終わりの一杯や女子会にぴったりです。"
+                image: "https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/yakiniku.jpg"
+                created_at: "2021-05-12T11:08:00.000000Z"
+                updated_at: "2021-05-12T11:08:00.000000Z"
+  /stores/{store_id}:
+    get:
+      tags:
+      - "Stores"
+      summary: "店舗詳細データ表示"
+      description: "指定した店舗の詳細データを表示します"
+      operationId: "getStoreDetail"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "store_id"
+        type: "number"
+        description: "店舗番号"
+        required: true
+      responses:
+        "200":
+          description: "店舗データ取得"
+          schema:
+            properties:
+              message:
+                type: "object"
+                example: "OK"
+              store:
+                example:
+                  id: "1"
+                  area_id: "1"
+                  genre_id: "1"
+                  name: "仙人"
+                  overview: "料理長厳選の食材から作る寿司を用いたコースをぜひお楽しみください。食材・味・価格、お客様の満足度を徹底的に追及したお店です。特別な日のお食事、ビジネス接待まで気軽に使用することができます。"
+                  image: "https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg"
+                  created_at: "2021-05-12T11:08:00.000000Z"
+                  updated_at: "2021-05-12T11:08:00.000000Z"
+        "404":
+          description: "店舗データがありません"
+          schema:
+            type: "object"
+            properties:
+              message:
+                type: "string"
+                example: "Not found"
+  /login:
+    post:
+      tags:
+      - "Login"
+      summary: "ログイン"
+      description: "ログインをします"
+      operationId: "Login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              example: "email@email.com"
+            password:
+              type: "string"
+              example: "password"
+      responses:
+        "200":
+          description: "ログイン完了"
+          schema:
+            properties:
+              auth:
+                type: "boolean"
+                example: true
+  /logout:
+    post:
+      tags:
+      - "Logout"
+      summary: "ログアウト"
+      description: "ログアウトをします"
+      operationId: "Logout"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "ログアウト完了"
+          schema:
+            properties:
+              auth:
+                type: "boolean"
+                example: false
+  /favorite:
+    post:
+      tags:
+      - "Favorite"
+      summary: "お気に入り店舗登録"
+      description: "お気に入り店舗を登録をします"
+      operationId: "createFavorite"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            store_id:
+              type: "string"
+              example: "1"
+            user_id:
+              type: "string"
+              example: "1"
+      responses:
+        "200":
+          description: "お気に入り登録完了"
+          schema:
+            properties:
+              message:
+                type: "string"
+                example: "Favorite created successfully"
+    put:
+      tags:
+      - "Favorite"
+      summary: "お気に入り再登録"
+      description: "お気に入り解除した店舗を再登録する"
+      operationId: "updateFavorite"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            store_id:
+              type: "string"
+              example: "1"
+            user_id:
+              type: "string"
+              example: "1"
+      responses:
+        "200":
+          description: "お気に入り再登録完了"
+          schema:
+            properties:
+              message:
+                type: "string"
+                example: "Favorite restored successfully"
+    delete:
+      tags:
+      - "Favorite"
+      summary: "お気に入り削除"
+      description: "お気に入り登録した店舗を削除する"
+      operationId: "deleteFavorite"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            store_id:
+              type: "string"
+              example: "1"
+            user_id:
+              type: "string"
+              example: "1"
+      responses:
+        "200":
+          description: "お気に入り削除完了"
+          schema:
+            properties:
+              message:
+                type: "string"
+                example: "Favorite deleted successfully"
+  /booking:
+    post:
+      tags:
+      - "Booking"
+      summary: "店舗予約登録"
+      description: "予約登録をします"
+      operationId: "Booking"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            store_id:
+              type: "string"
+              example: "1"
+            user_id:
+              type: "string"
+              example: "1"
+            booking_date:
+              type: "string"
+              example: "2021-05-20"
+            booking_time:
+              type: "string"
+              example: "18:00:00"
+            booking_number:
+              type: "string"
+              example: "2"
+      responses:
+        "200":
+          description: "店舗予約完了"
+          schema:
+            properties:
+              message:
+                type: "string"
+                example: "Booking successfully"
+    put:
+      tags:
+      - "Booking"
+      summary: "予約内容更新"
+      description: "予約した内容を更新する"
+      operationId: "updateBooking"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            store_id:
+              type: "string"
+              example: "1"
+            user_id:
+              type: "string"
+              example: "1"
+            booking_date:
+              type: "string"
+              example: "2021-05-25"
+            booking_time:
+              type: "string"
+              example: "20:00:00"
+            booking_number:
+              type: "string"
+              example: "4"
+      responses:
+        "200":
+          description: "予約内容更新完了"
+          schema:
+            properties:
+              message:
+                type: "string"
+                example: "Booking updated successfully"
+    delete:
+      tags:
+      - "Booking"
+      summary: "予約取消"
+      description: "予約を取消する"
+      operationId: "deleteBooking"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+              example: "1"
+            user_id:
+              type: "string"
+              example: "1"
+      responses:
+        "200":
+          description: "予約取消完了"
+          schema:
+            properties:
+              message:
+                type: "string"
+                example: "Favorite deleted successfully"
