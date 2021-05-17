@@ -17,6 +17,7 @@ class Favorite extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
     protected $fillable = [
         'store_id',
         'user_id'

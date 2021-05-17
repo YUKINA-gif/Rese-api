@@ -35,6 +35,7 @@ class UsersController extends Controller
     {
         if ($request->has("email")) {
             $user = User::where("email", $request->email)->get();
+
             return response()->json([
                 "message" => "User got successfully",
                 "user" => $user
@@ -45,6 +46,7 @@ class UsersController extends Controller
             ], 404);
         }
     }
+
     /**
      * [POST]新規会員登録
      *
@@ -62,8 +64,8 @@ class UsersController extends Controller
     {
         $now = Carbon::now();
         $hashed_password = Hash::make($request->password);
+        
         $param = new User;
-
         $param->fill([
             "name" => $request->name,
             "email" => $request->email,
@@ -72,10 +74,12 @@ class UsersController extends Controller
             "updated_at" => $now,
         ]);
         $param->save();
+
         return response()->json([
             'message' => 'User created successfully'
         ], 200);
     }
+
     /**
      * [GET]お気に入り店舗一覧取得
      *
@@ -90,10 +94,12 @@ class UsersController extends Controller
     public function favorites(Request $request)
     {
         $data = User::find($request->user_id)->favorites;
+
         return response()->json([
             "data" => $data
         ], 200);
     }
+    
     /**
      * [GET]予約一覧取得
      *
@@ -108,6 +114,7 @@ class UsersController extends Controller
     public function bookings(Request $request)
     {
         $data = User::find($request->user_id)->bookings;
+
         return response()->json([
             "data" => $data
         ], 200);

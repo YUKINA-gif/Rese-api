@@ -33,8 +33,8 @@ class BookingController extends Controller
     public function post(Request $request)
     {
         $now = Carbon::now();
+        
         $booking = new Booking;
-
         $booking->fill([
             "user_id" => $request->user_id,
             "store_id" => $request->store_id,
@@ -43,13 +43,13 @@ class BookingController extends Controller
             "booking_number" => $request->booking_number,
             "created_at" => $now,
             "updated_at" => $now,
-        ]);
+        ])->save();
 
-        $booking->save();
         return response()->json([
             "message" => "Booking successfully"
         ], 200);
     }
+
     /**
      * [PUT]予約更新
      * 
@@ -68,10 +68,12 @@ class BookingController extends Controller
             "booking_number" => $request->booking_number,
         ];
         Booking::where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
+
         return response()->json([
             "message" => "Booking updated successfully"
         ], 200);
     }
+
     /**
      * [DELETE]予約取消
      * 
@@ -84,6 +86,7 @@ class BookingController extends Controller
     public function delete(Request $request)
     {
         Booking::where("user_id", $request->user_id)->where("id", $request->id)->delete();
+
         return response()->json([
             "message" => "Booking deleted successfully"
         ], 200);

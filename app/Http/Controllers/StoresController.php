@@ -30,6 +30,7 @@ class StoresController extends Controller
     public function index()
     {
         $stores = Store::all();
+        
         return response()->json([
             "store" => $stores
         ], 200);

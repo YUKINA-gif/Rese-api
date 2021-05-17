@@ -29,9 +29,6 @@ class CreateFavoritesTable extends Migration
      */
     public function down()
     {
-        Schema::table("favorites",function(Blueprint $table)
-        {
-            $table->dropSoftDeletes("is_favorite");
-        });
+        Schema::dropIfExists('favorites');
     }
 }
