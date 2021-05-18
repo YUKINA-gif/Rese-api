@@ -24,25 +24,25 @@ class UsersController extends Controller
     /**
      * [GET]ユーザー情報の取得
      *
-     *　入力値（メールアドレス、パスワ ード）から
+     *　入力値（メールアドレス）から
      *  ユーザー情報を取得する
      * 
      * @access public
-     * @param Request $request  リクエストパラメーター
+     * @param Request $request  リクエストパラメータ
      * @return Response  ユーザー情報の取得、ない場合は404で返す
      */
     public function get(Request $request)
     {
-        if ($request->has("email")) {
-            $user = User::where("email", $request->email)->get();
-
+        $request->has("email");
+        $user = User::where("email", $request->email)->first();
+        if ($user) {
             return response()->json([
                 "message" => "User got successfully",
                 "user" => $user
             ], 200);
         } else {
             return response()->json([
-                "status" => "Not found"
+                "message" => "Not found"
             ], 404);
         }
     }
@@ -54,7 +54,7 @@ class UsersController extends Controller
      *  usersデータベースに登録する
      * 
      * @access public
-     * @param Request $request  リクエストパラメーター
+     * @param Request $request  リクエストパラメータ
      * @return Response  会員登録
      * @var timestamps $now  登録日時
      * @var string $hashed_password  ハッシュしたパスワード
@@ -87,7 +87,7 @@ class UsersController extends Controller
      *  お気に入り一覧を取得する
      * 
      * @access public
-     * @param Request $request  リクエストパラメーター
+     * @param Request $request  リクエストパラメータ
      * @return Response  お気に入り店舗一覧表示
      * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す
      */
@@ -95,7 +95,7 @@ class UsersController extends Controller
     {
         $data = User::find($request->user_id)->favorites;
 
-        if ($data) {
+        if (!empty($data->toArray())) {
             return response()->json([
                 "data" => $data
             ], 200);
@@ -121,7 +121,7 @@ class UsersController extends Controller
     {
         $data = User::find($request->user_id)->bookings;
 
-        if ($data) {
+        if (!empty($data->toArray())) {
             return response()->json([
                 "data" => $data
             ], 200);

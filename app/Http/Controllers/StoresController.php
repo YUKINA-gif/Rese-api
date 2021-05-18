@@ -31,7 +31,7 @@ class StoresController extends Controller
     {
         $stores = Store::all();
 
-        if ($stores) {
+        if (!empty($stores->toArray())) {
             return response()->json([
                 "store" => $stores
             ], 200);
