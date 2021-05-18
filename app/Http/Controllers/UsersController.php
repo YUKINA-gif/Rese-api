@@ -64,7 +64,7 @@ class UsersController extends Controller
     {
         $now = Carbon::now();
         $hashed_password = Hash::make($request->password);
-        
+
         $param = new User;
         $param->fill([
             "name" => $request->name,
@@ -95,11 +95,17 @@ class UsersController extends Controller
     {
         $data = User::find($request->user_id)->favorites;
 
-        return response()->json([
-            "data" => $data
-        ], 200);
+        if ($data) {
+            return response()->json([
+                "data" => $data
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
     }
-    
+
     /**
      * [GET]予約一覧取得
      *
@@ -115,8 +121,14 @@ class UsersController extends Controller
     {
         $data = User::find($request->user_id)->bookings;
 
-        return response()->json([
-            "data" => $data
-        ], 200);
+        if ($data) {
+            return response()->json([
+                "data" => $data
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
     }
 }
