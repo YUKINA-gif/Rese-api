@@ -33,7 +33,7 @@ class BookingController extends Controller
     public function post(Request $request)
     {
         $now = Carbon::now();
-        
+
         $booking = new Booking;
         $booking->fill([
             "user_id" => $request->user_id,
@@ -85,10 +85,16 @@ class BookingController extends Controller
      */
     public function delete(Request $request)
     {
-        Booking::where("user_id", $request->user_id)->where("id", $request->id)->delete();
+        $booking = Booking::where("user_id", $request->user_id)->where("id", $request->id)->delete();
 
-        return response()->json([
-            "message" => "Booking deleted successfully"
-        ], 200);
+        if ($booking) {
+            return response()->json([
+                "message" => "Booking deleted successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
     }
 }

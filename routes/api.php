@@ -20,9 +20,6 @@ use App\Http\Controllers\LogoutController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::apiResource("/stores", StoresController::class);
 Route::get("/user", [UsersController::class, "get"]);
 Route::post("/user", [UsersController::class, "post"]);
