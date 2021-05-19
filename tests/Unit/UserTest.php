@@ -2,45 +2,41 @@
 
 namespace Tests\Unit;
 
+use Carbon\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    /**
-     * ユーザーお気に入り店舗取得テスト
-     *
-     * @return void
-     * @test
-     */
-    public function user_favorite()
-    {
-        $data = [
-            "store_id" => "16"
-        ];
-        $response = $this->get('/api/user/1/favorite', $data);
+    use RefreshDatabase;
 
-        $response->assertStatus(200)->assertJsonFragment([
-            "store_id" => "16",
-            "user_id" => "1"
-        ]);
-    }
     /**
-     * ユーザー予約情報取得テスト
+     * ユーザー情報取得テスト
      *
      * @return void
      * @test
      */
-    public function user_booking()
+    public function user_get()
     {
-        $data = [
-            "store_id" => "14"
+        $response = $this->get("api/user?email=test@test.com");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+
+        $user = [
+            "name" => "test",
+            "email" => "test@test.com",
+            "password" => "testtest"
         ];
-        $response = $this->get("api/user/4/booking",$data);
-        $response->assertOk()->assertJsonFragment([
-            "store_id" => "14",
-            "user_id" => "4"
+
+        DB::table('users')->insert($user);
+
+        $response = $this->get("api/user?email=test@test.com");
+        $response->assertStatus(200)->assertJsonFragment([
+            "message" => "User got successfully",
+            "name" => "test"
         ]);
     }
 }
