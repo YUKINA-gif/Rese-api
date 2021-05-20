@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\StoresController;
@@ -20,7 +19,8 @@ use App\Http\Controllers\LogoutController;
 |
 */
 
-Route::apiResource("/stores", StoresController::class);
+Route::get("/stores", [StoresController::class,"get"]);
+Route::get("/stores/{id}", [StoresController::class,"getStore"]);
 Route::get("/user", [UsersController::class, "get"]);
 Route::post("/user", [UsersController::class, "post"]);
 Route::post("/login", [LoginController::class, "post"]);

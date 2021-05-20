@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * [API]店舗情報取得 class
@@ -27,7 +28,7 @@ class StoresController extends Controller
      * @return Response 店舗一覧表示
      * @var array $stores  店舗全データ
      */
-    public function index()
+    public function get()
     {
         $stores = Store::all();
 
@@ -43,17 +44,6 @@ class StoresController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * [GET]店舗詳細データ取得
      * 
      * 店舗詳細データを取得する
@@ -62,9 +52,9 @@ class StoresController extends Controller
      * @return Response 店舗詳細データ表示
      * @var array $store  店舗詳細データ
      */
-    public function show(Store $store)
+    public function getStore(Request $request)
     {
-        $store = Store::where("id", $store->id)->first();
+        $store = Store::where("id",$request->id)->first();
         if ($store) {
             return response()->json([
                 'message' => 'OK',
@@ -75,28 +65,5 @@ class StoresController extends Controller
                 'message' => 'Not found',
             ], 404);
         }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Store $store)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Store $store)
-    {
-        //
     }
 }

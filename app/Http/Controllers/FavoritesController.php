@@ -58,13 +58,19 @@ class FavoritesController extends Controller
      */
     public function restore(Request $request)
     {
-        Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->restore();
+        $favorite = Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->restore();
 
-        return response()->json([
-            "message" => "Favorite restored successfully"
-        ], 200);
+        if ($favorite) {
+            return response()->json([
+                "message" => "Favorite restored successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Nou found"
+            ], 404);
+        }
     }
-    
+
     /**
      * [DELETE]お気に入り削除
      * 
@@ -77,10 +83,16 @@ class FavoritesController extends Controller
      */
     public function delete(Request $request)
     {
-        Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->delete();
+        $favorite = Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->delete();
 
-        return response()->json([
-            "message" => "Favorite deleted successfully"
-        ], 200);
+        if ($favorite) {
+            return response()->json([
+                "message" => "Favorite deleted successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Nou found"
+            ], 404);
+        }
     }
 }

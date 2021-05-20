@@ -67,11 +67,17 @@ class BookingController extends Controller
             "booking_time" => $request->booking_time,
             "booking_number" => $request->booking_number,
         ];
-        Booking::where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
+        $booking = Booking::where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
 
-        return response()->json([
-            "message" => "Booking updated successfully"
-        ], 200);
+        if ($booking) {
+            return response()->json([
+                "message" => "Booking updated successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
     }
 
     /**
