@@ -91,7 +91,7 @@ class BookingController extends Controller
      */
     public function delete(Request $request)
     {
-        $booking = Booking::where("user_id", $request->user_id)->where("id", $request->id)->delete();
+        $booking = Booking::where("id", $request->id)->where("user_id", $request->user_id)->delete();
 
         if ($booking) {
             return response()->json([

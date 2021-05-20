@@ -66,7 +66,7 @@ class FavoritesController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "message" => "Nou found"
+                "message" => "Not found"
             ], 404);
         }
     }
@@ -91,7 +91,7 @@ class FavoritesController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "message" => "Nou found"
+                "message" => "Not found"
             ], 404);
         }
     }
