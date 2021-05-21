@@ -3,14 +3,32 @@
 namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
-
-
+use Illuminate\Support\Facades\Hash;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * 初期データ準備
+     *
+     * ユーザーデータ作成
+     * 
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $user = new User;
+        $user->fill([
+            "name" => "test",
+            "email" => "test@test.com",
+            "password" => Hash::make("testtest"),
+        ])->save();
+    }
 
     /**
      * [GET]ユーザー情報取得テスト
@@ -24,7 +42,7 @@ class UserTest extends TestCase
     public function 非正常系_ステータスコード404_user_get()
     {
         // ユーザー情報がない場合404を返す
-        $response = $this->get("api/user?email=test@test.com");
+        $response = $this->get("api/user?email=abc@def.com");
         $response->assertStatus(404)->assertJsonFragment([
             "message" => "Not found"
         ]);
@@ -41,14 +59,6 @@ class UserTest extends TestCase
      */
     public function 正常系_ステータスコード200_user_get()
     {
-        // usersテーブルにユーザー情報作成
-        $user = [
-            "name" => "test",
-            "email" => "test@test.com",
-            "password" => "testtest",
-        ];
-        DB::table('users')->insert($user);
-
         // ユーザー情報がある場合200を返す
         $response = $this->get("api/user?email=test@test.com");
         $response->assertStatus(200)->assertJsonFragment([
@@ -84,11 +94,11 @@ class UserTest extends TestCase
      */
     public function 正常系_ステータスコード200_user_post()
     {
-        // ユーザー情報作成
+        // リクエストパラメータ
         $user = [
-            "name" => "test",
-            "email" => "test@test.com",
-            "password" => "testtest",
+            "name" => "testname",
+            "email" => "aaa@aaa.com",
+            "password" => "aaaa1234",
         ];
 
         // リクエストパラメータありの場合200を返す
@@ -96,5 +106,16 @@ class UserTest extends TestCase
         $response->assertStatus(200)->assertJsonFragment([
             "message" => "User created successfully"
         ]);
+    }
+
+    /**
+     * データリフレッシュ
+     * 
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        Artisan::call('migrate:refresh');
+        parent::tearDown();
     }
 }

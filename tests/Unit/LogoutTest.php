@@ -10,7 +10,7 @@ class LogoutTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * ログアウト
+     * [POST]ログアウト
      *
      * 正常系
      * 

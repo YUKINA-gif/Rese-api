@@ -22,7 +22,7 @@ class FavoritesController extends Controller
     /**
      * [POST]お気に入り登録
      * 
-     * すでにお気に入り登録されている場合は削除する
+     * お気に入り店舗を登録する
      * 
      * @access public
      * @param Request $request リクエストパラメーター
