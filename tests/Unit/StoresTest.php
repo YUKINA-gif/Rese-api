@@ -12,17 +12,49 @@ class StoresTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * 初期データ準備
-     *
-     * 店舗データ作成
+     * 初期データなし
      * 
      * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
-        // storesテーブルに店舗データを作成
-        $this->artisan("db:seed", ["--class" => StoreSeeder::class]);
+    }
+
+    /**
+     * [GET]店舗全データ取得
+     *
+     * 異常系
+     * データ情報がない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_stores_get()
+    {
+        // 店舗データがない場合は404を返す
+        $response = $this->get("api/stores");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [GET]指定店舗データ取得
+     *
+     * 異常系
+     * データ情報がない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_store_get()
+    {
+        // 店舗データがない場合は404を返す
+        $response = $this->get("api/stores/150");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
     }
 
     /**
@@ -36,6 +68,9 @@ class StoresTest extends TestCase
      */
     public function 正常系_ステータスコード200_stores_get()
     {
+        // storesテーブルに店舗データを作成
+        $this->artisan("db:seed", ["--class" => StoreSeeder::class]);
+
         // 店舗データがある場合は200で返す
         $response = $this->get("api/stores");
         $response->assertStatus(200)->assertJsonFragment([
@@ -56,6 +91,9 @@ class StoresTest extends TestCase
      */
     public function 正常系_ステータスコード200_store_get()
     {
+        // storesテーブルに店舗データを作成
+        $this->artisan("db:seed", ["--class" => StoreSeeder::class]);
+
         // 指定店舗データがある場合は200で返す
         $response = $this->get("api/stores/1");
         $response->assertStatus(200)->assertJsonFragment([
@@ -64,7 +102,6 @@ class StoresTest extends TestCase
             "name" => "仙人"
         ]);
     }
-
     /**
      * データリフレッシュ
      * 

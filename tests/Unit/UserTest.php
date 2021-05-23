@@ -33,13 +33,13 @@ class UserTest extends TestCase
     /**
      * [GET]ユーザー情報取得テスト
      * 
-     * 非正常系
+     * 異常系
      * テーブルに情報がない場合
      *
      * @return void
      * @test
      */
-    public function 非正常系_ステータスコード404_user_get()
+    public function 異常系_ステータスコード404_user_get()
     {
         // ユーザー情報がない場合404を返す
         $response = $this->get("api/user?email=abc@def.com");
@@ -70,13 +70,13 @@ class UserTest extends TestCase
     /**
      * [POST]新規会員登録
      * 
-     * 非正常系
+     * 異常系
      * リクエストパラメータがない場合
      * 
      * @return void
      * @test
      */
-    public function 非正常系_ステータスコード500_user_post()
+    public function 異常系_ステータスコード500_user_post()
     {
         // リクエストパラメータなしの場合500を返す
         $response = $this->post("api/user");

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+use Database\Seeders\DatabaseSeeder;
 
 class FavoriteTest extends TestCase
 {
@@ -36,6 +36,9 @@ class FavoriteTest extends TestCase
             "password" => Hash::make("testtest"),
         ])->save();
 
+        // ランダムでユーザーデータ20人分追加
+        $this->artisan("db:seed", ["--class" => DatabaseSeeder::class]);
+
         // お気に入り店舗登録
         $now = Carbon::now();
         $favorite = [
@@ -54,8 +57,117 @@ class FavoriteTest extends TestCase
         ];
         DB::table("favorites")->insert($favorite);
 
-        // ランダムでお気に入り店舗追加
+        // ランダムでお気に入り店舗10件追加
         $this->artisan("db:seed", ["--class" => FavoriteSeeder::class]);
+    }
+
+    /**
+     * [GET]ユーザーお気に入り店舗取得
+     *
+     * 異常系
+     * テーブルに情報がない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_user_favorite()
+    {
+        // お気に入り店舗がない場合404を返す
+        $response = $this->get("api/user/15/favorite");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [POST]お気に入り店舗登録
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード500_favorite_post()
+    {
+        $response = $this->post("api/favorite");
+        $response->assertStatus(500);
+    }
+
+    /**
+     * [PUT]お気に入り店舗再登録
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_favorite_put()
+    {
+        $response = $this->put("api/favorite");
+        $response->assertStatus(404);
+    }
+
+    /**
+     * [PUT]お気に入り店舗再登録
+     *
+     * 異常系
+     * リクエストパラメータあり
+     * データベースにデータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_favorite_put_noDatabase()
+    {
+        // リクエストパラメータ
+        $favorite = [
+            "user_id" => "15",
+            "store_id" => "10"
+        ];
+        // データベースにデータがない場合404を返す
+        $response = $this->put("api/favorite", $favorite);
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [DELETE]お気に入り店舗削除
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_favorite_delete()
+    {
+        $response = $this->delete("api/favorite");
+        $response->assertStatus(404);
+    }
+
+    /**
+     * [DELETE]お気に入り店舗削除
+     *
+     * 異常系
+     * リクエストパラメータあり
+     * データベースにデータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_favorite_delete_noDatabase()
+    {
+        $favorite = [
+            "user_id" => "15",
+            "store_id" => "100"
+        ];
+        $response = $this->put("api/favorite", $favorite);
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
     }
 
     /**

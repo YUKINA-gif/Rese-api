@@ -5,14 +5,22 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
-use Database\Seeders\BookingSeeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
+use Database\Seeders\DatabaseSeeder;
 
 class BookingTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * 初期データ準備
+     *
+     * ユーザーデータ作成
+     * 予約データ作成
+     * 
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -24,7 +32,7 @@ class BookingTest extends TestCase
             "password" => Hash::make("testtest"),
         ];
         DB::table("users")->insert($user);
-        
+
         $user = [
             "name" => "test",
             "email" => "abcd@efgh.com",
@@ -32,6 +40,9 @@ class BookingTest extends TestCase
         ];
         DB::table("users")->insert($user);
 
+        // ランダムでユーザーデータ20人分追加
+        $this->artisan("db:seed", ["--class" => DatabaseSeeder::class]);
+        
         // 予約情報作成
         $booking = [
             "user_id" => "1",
@@ -51,8 +62,122 @@ class BookingTest extends TestCase
         ];
         DB::table("bookings")->insert($booking);
 
-        // ランダムで予約店舗登録
-        $this->artisan("db:seed", ["--class" => BookingSeeder::class]);
+        $booking = [
+            "user_id" => "2",
+            "store_id" => "4",
+            "booking_date" => "2021/06/03",
+            "booking_time" => "18:30",
+            "booking_number" => "3",
+        ];
+        DB::table("bookings")->insert($booking);
+    }
+
+    /**
+     * [GET]ユーザー予約状況取得
+     *
+     * 異常系
+     * テーブルに情報がない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_user_booking()
+    {
+        // 予約がない場合404を返す
+        $response = $this->get("api/user/10/booking");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [POST]予約登録
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード500_booking_post()
+    {
+        $response = $this->post("api/booking");
+        $response->assertStatus(500);
+    }
+
+    /**
+     * [PUT]予約更新
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_booking_put()
+    {
+        $response = $this->put("api/booking");
+        $response->assertStatus(404);
+    }
+
+    /**
+     * [DELETE]予約削除
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_booking_delete_noParameter()
+    {
+        $response = $this->delete("api/booking");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [DELETE]予約削除
+     *
+     * 異常系
+     * 登録外のリクエストパラメータを送った場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_booking_delete()
+    {
+        // データがない場合404を返す
+        $booking = [
+            "id" => "100",
+            "user_id" => "100",
+        ];
+        $response = $this->delete("api/booking", $booking);
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [GET]ユーザー予約状況取得
+     *
+     * 正常系
+     * テーブルに情報が1つだけある場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 正常系_ステータスコード200_user_booking()
+    {
+        // 予約がある場合200を返す
+        $response = $this->get("api/user/2/booking");
+        $response->assertStatus(200)->assertJsonFragment([
+            "store_id" => "4",
+            "booking_date" => "2021-06-03",
+            "booking_time" => "18:30:00",
+            "booking_number" => 3,
+        ]);
     }
 
     /**
@@ -96,11 +221,11 @@ class BookingTest extends TestCase
     {
         // 予約登録
         $booking = [
-            "user_id" => "1",
-            "store_id" => "3",
             "booking_date" => "2021/05/31",
             "booking_time" => "18:00",
-            "booking_number" => 2
+            "booking_number" => 2,
+            "store_id" => "3",
+            "user_id" => "1",
         ];
         $response = $this->post("api/booking", $booking);
 
