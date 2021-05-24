@@ -22,6 +22,7 @@ class LoginTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
         $user = new User;
         $user->fill([
             "name" => "test",

@@ -73,7 +73,7 @@ class FavoriteTest extends TestCase
     public function 異常系_ステータスコード404_user_favorite()
     {
         // お気に入り店舗がない場合404を返す
-        $response = $this->get("api/user/15/favorite");
+        $response = $this->get("api/user/20/favorite");
         $response->assertStatus(404)->assertJsonFragment([
             "message" => "Not found"
         ]);

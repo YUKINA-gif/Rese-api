@@ -42,7 +42,7 @@ class BookingTest extends TestCase
 
         // ランダムでユーザーデータ20人分追加
         $this->artisan("db:seed", ["--class" => DatabaseSeeder::class]);
-        
+
         // 予約情報作成
         $booking = [
             "user_id" => "1",
@@ -70,6 +70,9 @@ class BookingTest extends TestCase
             "booking_number" => "3",
         ];
         DB::table("bookings")->insert($booking);
+
+        // ランダムで予約データ10件追加
+        $this->artisan("db:seed", ["--class" => DatabaseSeeder::class]);
     }
 
     /**
@@ -84,7 +87,7 @@ class BookingTest extends TestCase
     public function 異常系_ステータスコード404_user_booking()
     {
         // 予約がない場合404を返す
-        $response = $this->get("api/user/10/booking");
+        $response = $this->get("api/user/20/booking");
         $response->assertStatus(404)->assertJsonFragment([
             "message" => "Not found"
         ]);
@@ -174,6 +177,7 @@ class BookingTest extends TestCase
         $response = $this->get("api/user/2/booking");
         $response->assertStatus(200)->assertJsonFragment([
             "store_id" => "4",
+            "user_id" => "2",
             "booking_date" => "2021-06-03",
             "booking_time" => "18:30:00",
             "booking_number" => 3,
