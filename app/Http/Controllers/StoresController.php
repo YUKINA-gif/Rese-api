@@ -29,17 +29,20 @@ class StoresController extends Controller
      * @access public
      * @return Response 店舗一覧表示
      * @var array $stores  店舗全データ
+     * @var array $area  エリア一覧
+     * @var array $geenre  ジャンル一覧
+     * @var array $item  $storesと$areaと$genreを配列に入れる
      */
     public function get(Request $request)
     {
-        $stores = Store::with("area", "genre")->get();
+        $stores = Store::with("area", "genre")->with("favorites", function ($q) use ($request) {
+            $q->where("user_id", $request->user_id);
+        })->get();
         $area = Area::get();
         $genre = Genre::get();
-        $favorite = Favorite::where("user_id",$request->user_id)->get("store_id");
 
         $item = [
             "store" => $stores,
-            "favorite" => $favorite,
             "area" => $area,
             "genre" => $genre,
         ];

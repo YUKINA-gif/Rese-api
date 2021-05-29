@@ -34,8 +34,7 @@ class FavoritesController extends Controller
      */
     public function get(Request $request)
     {
-        $data = Favorite::where("user_id",$request->user_id)->with("store.area","store.genre")->get();
-      
+        $data = Favorite::where("user_id", $request->user_id)->with("store.area", "store.genre")->get();
 
         if (!empty($data->toArray())) {
             return response()->json([
@@ -50,78 +49,64 @@ class FavoritesController extends Controller
 
     /**
      * [POST]お気に入り登録
+     * [PUT]復元
+     * [DELETE]削除
      * 
      * お気に入り店舗を登録する
+     * すでに登録されていれば削除、
+     * すでに削除されていれば復元する
      * 
      * @access public
-     * @param Request $request リクエストパラメーター
-     * @return Response お気に入り登録
+     * @param Request $request リクエストパラメータ
+     * @return Response お気に入り登録,復元,削除
      * @var timestamps $now  登録日時
      * @var array $favorite  新規レコード
+     * @var array $seach_myfavorite すでに登録されているか調べる
      */
-    public function post(Request $request)
+    public function favorites(Request $request)
     {
-        $now = Carbon::now();
+        // データがあるか調べる
+        $seach_myfavorite =
+            Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->withTrashed()->first();
+        // なければ登録
+        if (!$seach_myfavorite) {
+            $now = Carbon::now();
 
-        $favorite = new Favorite;
-        $favorite->fill([
-            "store_id" => $request->store_id,
-            "user_id" => $request->user_id,
-            "created_at" => $now,
-            "updated_at" => $now
-        ])->save();
+            $favorite = new Favorite;
+            $favorite->fill([
+                "store_id" => $request->store_id,
+                "user_id" => $request->user_id,
+                "created_at" => $now,
+                "updated_at" => $now
+            ])->save();
 
-        return response()->json([
-            "message" => "Favorite created successfully"
-        ], 200);
-    }
-
-    /**
-     * [PUT]お気に入り削除を復元
-     * 
-     * お気に入り削除していたデータを復元する
-     * 
-     * @access public
-     * @param Request $request リクエストパラメーター
-     * @return Response お気に入り削除分を復元
-     */
-    public function restore(Request $request)
-    {
-        $favorite = Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->restore();
-
-        if ($favorite) {
             return response()->json([
-                "message" => "Favorite restored successfully"
+                "message" => "Favorite created successfully"
             ], 200);
+            // データがあり、削除されていれば復元する 
+        } elseif ($seach_myfavorite->trashed()) {
+            $favorite = $seach_myfavorite->restore();
+            if ($favorite) {
+                return response()->json([
+                    "message" => "Favorite restored successfully"
+                ], 200);
+            } else {
+                return response()->json([
+                    "message" => "Not found"
+                ], 404);
+            }
+            // そうでなければ削除する
         } else {
-            return response()->json([
-                "message" => "Not found"
-            ], 404);
-        }
-    }
-
-    /**
-     * [DELETE]お気に入り削除
-     * 
-     * お気に入り登録している店舗を削除する
-     * ソフトデリートのためデータベースにデータは残る
-     * 
-     * @access public
-     * @param Request $request リクエストパラメーター
-     * @return Response お気に入り削除
-     */
-    public function delete(Request $request)
-    {
-        $favorite = Favorite::where("store_id", $request->store_id)->where('user_id', $request->user_id)->delete();
-
-        if ($favorite) {
-            return response()->json([
-                "message" => "Favorite deleted successfully"
-            ], 200);
-        } else {
-            return response()->json([
-                "message" => "Not found"
-            ], 404);
+            $favorite = $seach_myfavorite->delete();
+            if ($favorite) {
+                return response()->json([
+                    "message" => "Favorite deleted successfully"
+                ], 200);
+            } else {
+                return response()->json([
+                    "message" => "Not found"
+                ], 404);
+            }
         }
     }
 }
