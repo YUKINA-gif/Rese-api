@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Models\Area;
+use App\Models\Genre;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 /**
  * [API]店舗情報取得 class
@@ -28,13 +30,23 @@ class StoresController extends Controller
      * @return Response 店舗一覧表示
      * @var array $stores  店舗全データ
      */
-    public function get()
+    public function get(Request $request)
     {
-        $stores = Store::all();
+        $stores = Store::with("area", "genre")->get();
+        $area = Area::get();
+        $genre = Genre::get();
+        $favorite = Favorite::where("user_id",$request->user_id)->get("store_id");
+
+        $item = [
+            "store" => $stores,
+            "favorite" => $favorite,
+            "area" => $area,
+            "genre" => $genre,
+        ];
 
         if (!empty($stores->toArray())) {
             return response()->json([
-                "store" => $stores
+                "item" => $item
             ], 200);
         } else {
             return response()->json([
@@ -54,7 +66,7 @@ class StoresController extends Controller
      */
     public function getStore(Request $request)
     {
-        $store = Store::where("id",$request->id)->first();
+        $store = Store::where("id", $request->id)->with("area", "genre")->first();
         if ($store) {
             return response()->json([
                 'message' => 'OK',

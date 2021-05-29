@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * [API]ユーザー情報API class
@@ -33,16 +34,15 @@ class UsersController extends Controller
      */
     public function get(Request $request)
     {
-        $request->has("email");
-        $user = User::where("email", $request->email)->first();
-        if ($user) {
+        if ($request->has('email')) {
+            $user = User::where('email', $request->email)->get();
             return response()->json([
-                "message" => "User got successfully",
-                "user" => $user
+                'message' => 'User got successfully',
+                'user' => $user
             ], 200);
         } else {
             return response()->json([
-                "message" => "Not found"
+                'status' => 'not found'
             ], 404);
         }
     }
@@ -80,55 +80,7 @@ class UsersController extends Controller
         ], 200);
     }
 
-    /**
-     * [GET]お気に入り店舗一覧取得
-     *
-     *　ユーザーID(リクエスト)から
-     *  お気に入り一覧を取得する
-     * 
-     * @access public
-     * @param Request $request  リクエストパラメータ
-     * @return Response  お気に入り店舗一覧表示
-     * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す
-     */
-    public function favorites(Request $request)
-    {
-        $data = User::find($request->user_id)->favorites;
+    
 
-        if (!empty($data->toArray())) {
-            return response()->json([
-                "data" => $data
-            ], 200);
-        } else {
-            return response()->json([
-                "message" => "Not found"
-            ], 404);
-        }
-    }
-
-    /**
-     * [GET]予約一覧取得
-     *
-     *　ユーザーID(リクエスト)から
-     *  予約一覧を取得する
-     * 
-     * @access public
-     * @param Request $request  リクエストパラメーター
-     * @return Response  予約一覧表示
-     * @var array $data ユーザーID(リクエスト)から予約一覧を探す
-     */
-    public function bookings(Request $request)
-    {
-        $data = User::find($request->user_id)->bookings;
-
-        if (!empty($data->toArray())) {
-            return response()->json([
-                "data" => $data
-            ], 200);
-        } else {
-            return response()->json([
-                "message" => "Not found"
-            ], 404);
-        }
-    }
+    
 }

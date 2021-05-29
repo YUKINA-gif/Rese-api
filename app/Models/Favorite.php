@@ -17,9 +17,18 @@ class Favorite extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
     
     protected $fillable = [
         'store_id',
         'user_id'
+    ];
+
+    protected $hidden = [
+        "created_at",
+        'updated_at',
     ];
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Favorite;
+use App\Models\User;
+use App\Models\Store;
 use Carbon\Carbon;
 
 /**
@@ -19,6 +21,33 @@ use Carbon\Carbon;
  */
 class FavoritesController extends Controller
 {
+    /**
+     * [GET]お気に入り店舗一覧取得
+     *
+     *　ユーザーID(リクエスト)から
+     *  お気に入り一覧を取得する
+     * 
+     * @access public
+     * @param Request $request  リクエストパラメータ
+     * @return Response  お気に入り店舗一覧表示
+     * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す
+     */
+    public function get(Request $request)
+    {
+        $data = Favorite::where("user_id",$request->user_id)->with("store.area","store.genre")->get();
+      
+
+        if (!empty($data->toArray())) {
+            return response()->json([
+                "data" => $data
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
+    }
+
     /**
      * [POST]お気に入り登録
      * 

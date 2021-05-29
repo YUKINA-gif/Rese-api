@@ -19,17 +19,17 @@ use App\Http\Controllers\LogoutController;
 |
 */
 
-Route::get("/stores", [StoresController::class,"get"]);
-Route::get("/stores/{id}", [StoresController::class,"getStore"]);
+Route::get("/stores/{user_id}", [StoresController::class,"get"]);
+Route::get("/store/{id}", [StoresController::class,"getStore"]);
 Route::get("/user", [UsersController::class, "get"]);
 Route::post("/user", [UsersController::class, "post"]);
 Route::post("/login", [LoginController::class, "post"]);
 Route::post("/logout", [LogoutController::class, "post"]);
-Route::get("/user/{user_id}/favorite", [UsersController::class, "favorites"]);
+Route::get("/user/{user_id}/favorite", [FavoritesController::class, "get"]);
 Route::post("/favorite", [FavoritesController::class, "post"]);
 Route::put("/favorite", [FavoritesController::class, "restore"]);
 Route::delete("/favorite", [FavoritesController::class, "delete"]);
-Route::get("/user/{user_id}/booking", [UsersController::class, "bookings"]);
+Route::get("/user/{user_id}/booking", [BookingController::class, "get"]);
 Route::post("/booking", [BookingController::class, "post"]);
 Route::put("/booking", [BookingController::class, "put"]);
 Route::delete("/booking", [BookingController::class, "delete"]);

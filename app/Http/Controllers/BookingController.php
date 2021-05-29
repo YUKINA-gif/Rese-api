@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\User;
 use Carbon\Carbon;
 
 /**
@@ -19,6 +20,32 @@ use Carbon\Carbon;
  */
 class BookingController extends Controller
 {
+    /**
+     * [GET]予約一覧取得
+     *
+     *　ユーザーID(リクエスト)から
+     *  予約一覧を取得する
+     * 
+     * @access public
+     * @param Request $request  リクエストパラメーター
+     * @return Response  予約一覧表示
+     * @var array $data ユーザーID(リクエスト)から予約一覧を探す
+     */
+    public function get(Request $request)
+    {
+        $data = Booking::where("user_id", $request->user_id)->with("store")->get();
+
+        if (!empty($data->toArray())) {
+            return response()->json([
+                "data" => $data
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
+    }
+
     /**
      * [POST]予約登録
      * 
@@ -67,7 +94,7 @@ class BookingController extends Controller
             "booking_time" => $request->booking_time,
             "booking_number" => $request->booking_number,
         ];
-        $booking = Booking::where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
+        $booking = Booking::where("id",$request->id)->where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
 
         if ($booking) {
             return response()->json([
