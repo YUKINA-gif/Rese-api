@@ -98,7 +98,8 @@ class BookingController extends Controller
 
         if ($booking) {
             return response()->json([
-                "message" => "Booking updated successfully"
+                "message" => "Booking updated successfully",
+                "data" => $request
             ], 200);
         } else {
             return response()->json([
@@ -118,9 +119,9 @@ class BookingController extends Controller
      */
     public function delete(Request $request)
     {
-        $booking = Booking::where("id", $request->id)->where("user_id", $request->user_id)->delete();
+        $booking_del = Booking::where("id", $request->id)->where("user_id", $request->user_id)->delete();
 
-        if ($booking) {
+        if ($booking_del) {
             return response()->json([
                 "message" => "Booking deleted successfully"
             ], 200);
