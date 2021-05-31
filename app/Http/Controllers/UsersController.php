@@ -65,6 +65,13 @@ class UsersController extends Controller
         $now = Carbon::now();
         $hashed_password = Hash::make($request->password);
 
+        // バリデーション設定
+        $request->validate([
+            "name" => ["required","string","max:20"],
+            "email" => ["required","email",],
+            "password" => ["required","string","min:8"],
+        ]);
+
         $param = new User;
         $param->fill([
             "name" => $request->name,

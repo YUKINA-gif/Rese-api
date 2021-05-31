@@ -31,6 +31,12 @@ class LoginController extends Controller
      */
     public function post(Request $request)
     {
+        // バリデーション設定
+        $request->validate([
+            "email" => ["required", "email",],
+            "password" => ["required", "password",],
+        ]);
+
         $items = User::where('email', $request->email)->first();
         if (Hash::check($request->password, $items->password)) {
             return response()->json([
