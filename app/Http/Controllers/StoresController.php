@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Store;
 use App\Models\Area;
 use App\Models\Genre;
-use App\Models\Favorite;
 use Illuminate\Http\Request;
 
 /**
@@ -93,7 +92,7 @@ class StoresController extends Controller
      */
     public function seachStore(Request $request)
     {
-        $store = Store::when($request->name, function ($q) use ($request) {
+        $stores = Store::with("area","genre")->when($request->name, function ($q) use ($request) {
             $q->where("name", "like", "%$request->name%");
         })->when($request->area_id, function ($q) use ($request) {
             $q->where("area_id", $request->area_id);
@@ -101,9 +100,9 @@ class StoresController extends Controller
             $q->where("genre_id", $request->genre_id);
         })->get();
 
-        if ($store) {
+        if (!empty($stores->toArray())) {
             return response()->json([
-                "store" => $store
+                "store" => $stores
             ], 200);
         } else {
             return response()->json([
