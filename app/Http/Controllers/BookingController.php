@@ -60,6 +60,17 @@ class BookingController extends Controller
     public function post(Request $request)
     {
         $now = Carbon::now();
+        $request->validate([
+            "user_id" => ["required"],
+            "store_id" =>
+            ["required"],
+            "booking_date" =>
+            ["required", "date", "after:tomorrow"],
+            "booking_time" =>
+            ["required",],
+            "booking_number" =>
+            ["required", "numeric"],
+        ]);
 
         $booking = new Booking;
         $booking->fill([
@@ -94,7 +105,7 @@ class BookingController extends Controller
             "booking_time" => $request->booking_time,
             "booking_number" => $request->booking_number,
         ];
-        $booking = Booking::where("id",$request->id)->where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
+        $booking = Booking::where("id", $request->id)->where("user_id", $request->user_id)->where("store_id", $request->store_id)->update($param);
 
         if ($booking) {
             return response()->json([
