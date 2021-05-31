@@ -34,7 +34,7 @@ class LoginController extends Controller
         // バリデーション設定
         $request->validate([
             "email" => ["required", "email",],
-            "password" => ["required", "password",],
+            "password" => ["required", "string",],
         ]);
 
         $items = User::where('email', $request->email)->first();
