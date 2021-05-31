@@ -81,4 +81,34 @@ class StoresController extends Controller
             ], 404);
         }
     }
+
+    /**
+     * [GET]店舗検索データ取得
+     * 
+     * 店舗検索データを取得する
+     * 
+     * @access public
+     * @return Response 店舗詳細データ表示
+     * @var array $store  店舗詳細データ
+     */
+    public function seachStore(Request $request)
+    {
+        $store = Store::when($request->name, function ($q) use ($request) {
+            $q->where("name", "like", "%$request->name%");
+        })->when($request->area_id, function ($q) use ($request) {
+            $q->where("area_id", $request->area_id);
+        })->when($request->genre_id, function ($q) use ($request) {
+            $q->where("genre_id", $request->genre_id);
+        })->get();
+
+        if ($store) {
+            return response()->json([
+                "store" => $store
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
+    }
 }
