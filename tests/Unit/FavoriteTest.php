@@ -95,60 +95,6 @@ class FavoriteTest extends TestCase
     }
 
     /**
-     * [PUT]お気に入り店舗再登録
-     *
-     * 異常系
-     * リクエストパラメータがない場合
-     * 
-     * @return void
-     * @test
-     */
-    public function 異常系_ステータスコード404_favorite_put()
-    {
-        $response = $this->put("api/favorite");
-        $response->assertStatus(404);
-    }
-
-    /**
-     * [PUT]お気に入り店舗再登録
-     *
-     * 異常系
-     * リクエストパラメータあり
-     * データベースにデータがない場合
-     * 
-     * @return void
-     * @test
-     */
-    public function 異常系_ステータスコード404_favorite_put_noDatabase()
-    {
-        // リクエストパラメータ
-        $favorite = [
-            "user_id" => "15",
-            "store_id" => "10"
-        ];
-        // データベースにデータがない場合404を返す
-        $response = $this->put("api/favorite", $favorite);
-        $response->assertStatus(404)->assertJsonFragment([
-            "message" => "Not found"
-        ]);
-    }
-
-    /**
-     * [DELETE]お気に入り店舗削除
-     *
-     * 異常系
-     * リクエストパラメータがない場合
-     * 
-     * @return void
-     * @test
-     */
-    public function 異常系_ステータスコード404_favorite_delete()
-    {
-        $response = $this->delete("api/favorite");
-        $response->assertStatus(404);
-    }
-
-    /**
      * [GET]ユーザーお気に入り店舗取得
      *
      * 正常系
@@ -206,7 +152,7 @@ class FavoriteTest extends TestCase
         // リクエストパラメータ
         $favorite = [
             "user_id" => "1",
-            "store_id" => "3"
+            "store_id" => "5"
         ];
 
         // 削除する
@@ -230,10 +176,10 @@ class FavoriteTest extends TestCase
         // お気に入り店舗データを作成、削除(ソフトデリート)
         $favorite = [
             "user_id" => "1",
-            "store_id" => "10"
+            "store_id" => "5"
         ];
-        DB::table("favorites")->insert($favorite);
-        DB::table("favorites")->delete($favorite);
+        // 削除する
+        $this->post("api/favorite", $favorite);
 
         // 再登録する
         $response = $this->post("api/favorite", $favorite);

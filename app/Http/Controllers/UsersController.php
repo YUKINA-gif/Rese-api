@@ -45,7 +45,7 @@ class UsersController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'status' => 'not found'
+                'message' => 'Not found'
             ], 404);
         }
     }
