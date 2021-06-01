@@ -149,28 +149,6 @@ class FavoriteTest extends TestCase
     }
 
     /**
-     * [DELETE]お気に入り店舗削除
-     *
-     * 異常系
-     * リクエストパラメータあり
-     * データベースにデータがない場合
-     * 
-     * @return void
-     * @test
-     */
-    public function 異常系_ステータスコード404_favorite_delete_noDatabase()
-    {
-        $favorite = [
-            "user_id" => "15",
-            "store_id" => "100"
-        ];
-        $response = $this->put("api/favorite", $favorite);
-        $response->assertStatus(404)->assertJsonFragment([
-            "message" => "Not found"
-        ]);
-    }
-
-    /**
      * [GET]ユーザーお気に入り店舗取得
      *
      * 正常系
@@ -216,6 +194,30 @@ class FavoriteTest extends TestCase
     }
 
     /**
+     * [DELETE]お気に入り店舗削除
+     *
+     * 正常系
+     * 
+     * @return void
+     * @test
+     */
+    public function 正常系_ステータスコード200_favorite_delete()
+    {
+        // リクエストパラメータ
+        $favorite = [
+            "user_id" => "1",
+            "store_id" => "3"
+        ];
+
+        // 削除する
+        $response = $this->post("api/favorite", $favorite);
+        $response->assertStatus(200)->assertJsonFragment([
+            "message" => "Favorite deleted successfully"
+        ]);
+    }
+
+
+    /**
      * [PUT]お気に入り店舗再登録
      *
      * 正常系
@@ -234,35 +236,13 @@ class FavoriteTest extends TestCase
         DB::table("favorites")->delete($favorite);
 
         // 再登録する
-        $response = $this->put("api/favorite", $favorite);
+        $response = $this->post("api/favorite", $favorite);
         $response->assertStatus(200)->assertJsonFragment([
             "message" => "Favorite restored successfully"
         ]);
     }
 
-    /**
-     * [DELETE]お気に入り店舗削除
-     *
-     * 正常系
-     * 
-     * @return void
-     * @test
-     */
-    public function 正常系_ステータスコード200_favorite_delete()
-    {
-        // リクエストパラメータ
-        $favorite = [
-            "user_id" => "1",
-            "store_id" => "5"
-        ];
-
-        // 削除する
-        $response = $this->delete("api/favorite", $favorite);
-        $response->assertStatus(200)->assertJsonFragment([
-            "message" => "Favorite deleted successfully"
-        ]);
-    }
-
+    
     /**
      * データリフレッシュ
      * 

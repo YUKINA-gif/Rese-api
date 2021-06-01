@@ -47,7 +47,7 @@ class BookingTest extends TestCase
         $booking = [
             "user_id" => "1",
             "store_id" => "1",
-            "booking_date" => "2021/05/30",
+            "booking_date" => "2025/05/30",
             "booking_time" => "18:00",
             "booking_number" => "2",
         ];
@@ -56,7 +56,7 @@ class BookingTest extends TestCase
         $booking = [
             "user_id" => "1",
             "store_id" => "5",
-            "booking_date" => "2021/06/01",
+            "booking_date" => "2025/06/01",
             "booking_time" => "19:00",
             "booking_number" => "4",
         ];
@@ -65,7 +65,7 @@ class BookingTest extends TestCase
         $booking = [
             "user_id" => "2",
             "store_id" => "4",
-            "booking_date" => "2021/06/03",
+            "booking_date" => "2025/06/03",
             "booking_time" => "18:30",
             "booking_number" => "3",
         ];
@@ -102,10 +102,10 @@ class BookingTest extends TestCase
      * @return void
      * @test
      */
-    public function 異常系_ステータスコード500_booking_post()
+    public function 異常系_ステータスコード302_booking_post()
     {
         $response = $this->post("api/booking");
-        $response->assertStatus(500);
+        $response->assertStatus(302);
     }
 
     /**
@@ -225,7 +225,7 @@ class BookingTest extends TestCase
     {
         // 予約登録
         $booking = [
-            "booking_date" => "2021/05/31",
+            "booking_date" => "2023/09/01",
             "booking_time" => "18:00",
             "booking_number" => 2,
             "store_id" => "3",
@@ -253,7 +253,7 @@ class BookingTest extends TestCase
         $booking_put = [
             "user_id" => "1",
             "store_id" => "5",
-            "booking_date" => "2021/06/03",
+            "booking_date" => "2025/06/03",
             "booking_time" => "19:30",
             "booking_number" => 6
         ];

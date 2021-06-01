@@ -77,11 +77,11 @@ class UserTest extends TestCase
      * @return void
      * @test
      */
-    public function 異常系_ステータスコード500_user_post()
+    public function 異常系_ステータスコード302_user_post()
     {
         // リクエストパラメータなしの場合500を返す
         $response = $this->post("api/user");
-        $response->assertStatus(500);
+        $response->assertStatus(302);
     }
 
     /**

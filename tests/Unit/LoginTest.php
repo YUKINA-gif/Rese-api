@@ -34,13 +34,13 @@ class LoginTest extends TestCase
     /**
      * [POST]ログイン
      *
-     * 非正常系
+     * 異常系
      * データ情報がない場合
      * 
      * @return void
      * @test
      */
-    public function 非正常系_ステータスコード500_login_post_noDatabase()
+    public function 異常系_ステータスコード500_login_post_noDatabase()
     {
         $user = [
             "email" => "abc@def.com",
@@ -53,16 +53,16 @@ class LoginTest extends TestCase
     /**
      * [POST]ログイン
      *
-     * 非正常系
+     * 異常系
      * リクエストパラメータがない場合
      * 
      * @return void
      * @test
      */
-    public function 非正常系_ステータスコード500_login_post()
+    public function 異常系_ステータスコード302_login_post()
     {
         $response = $this->post("api/login");
-        $response->assertStatus(500);
+        $response->assertStatus(302);
     }
 
     /**

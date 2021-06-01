@@ -35,7 +35,10 @@ class UsersController extends Controller
     public function get(Request $request)
     {
         if ($request->has('email')) {
-            $user = User::where('email', $request->email)->get();
+            $user = User::where('email', $request->email)->first();
+        }
+
+        if ($user) {
             return response()->json([
                 'message' => 'User got successfully',
                 'user' => $user
@@ -67,9 +70,9 @@ class UsersController extends Controller
 
         // バリデーション設定
         $request->validate([
-            "name" => ["required","string","max:20"],
-            "email" => ["required","email",],
-            "password" => ["required","string","min:8"],
+            "name" => ["required", "string"],
+            "email" => ["required", "email",],
+            "password" => ["required", "string", "min:8"],
         ]);
 
         $param = new User;
@@ -86,8 +89,4 @@ class UsersController extends Controller
             'message' => 'User created successfully'
         ], 200);
     }
-
-    
-
-    
 }
