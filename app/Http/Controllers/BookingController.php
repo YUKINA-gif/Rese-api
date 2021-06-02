@@ -60,6 +60,8 @@ class BookingController extends Controller
     public function post(Request $request)
     {
         $now = Carbon::now();
+        
+        // バリデーション設定
         $request->validate([
             "user_id" => ["required"],
             "store_id" =>

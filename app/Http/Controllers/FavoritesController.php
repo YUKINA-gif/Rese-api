@@ -83,7 +83,7 @@ class FavoritesController extends Controller
             return response()->json([
                 "message" => "Favorite created successfully"
             ], 200);
-            // データがあり、削除されていれば復元する 
+        // データがあり、削除されていれば復元する 
         } elseif ($seach_myfavorite->trashed()) {
             $favorite = $seach_myfavorite->restore();
             if ($favorite) {
@@ -95,7 +95,7 @@ class FavoritesController extends Controller
                     "message" => "Not found"
                 ], 404);
             }
-            // そうでなければ削除する
+        // そうでなければ削除する
         } else {
             $favorite = $seach_myfavorite->delete();
             if ($favorite) {
