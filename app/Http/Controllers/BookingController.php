@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
-use App\Models\User;
 use Carbon\Carbon;
 
 /**
@@ -60,18 +59,14 @@ class BookingController extends Controller
     public function post(Request $request)
     {
         $now = Carbon::now();
-        
+
         // バリデーション設定
         $request->validate([
             "user_id" => ["required"],
-            "store_id" =>
-            ["required"],
-            "booking_date" =>
-            ["required", "date", "after:tomorrow"],
-            "booking_time" =>
-            ["required",],
-            "booking_number" =>
-            ["required", "numeric"],
+            "store_id" => ["required"],
+            "booking_date" => ["required", "date", "after:tomorrow"],
+            "booking_time" => ["required",],
+            "booking_number" => ["required", "numeric"],
         ]);
 
         $booking = new Booking;

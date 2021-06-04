@@ -1,0 +1,54 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+    services:
+       mysql:
+        image: mysql:8.0.19
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: 
+          MYSQL_DATABASE: rese_test
+          MYSQL_USER: root
+          MYSQL_PASSWORD:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+          options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+    
+    env:
+      DB_CONNECTION: mysql
+      DB_DATABASE: rese_test
+      DB_HOST: 127.0.0.1
+      
+    steps:
+    - uses: actions/checkout@v2    
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example','.env');"
+      
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      
+    - name: Generate key
+      run: php artisan key:generate --env=testing
+      
+    - name: Migrate
+      run: php artisan migrate --force
+      env:
+        DB_HOST: 127.0.0.1
+      
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DB_CONNECTION: mysql
+        DB_DATABASE: rese_test
+        DB_HOST: 127.0.0.1
+      run: |
+        php config clear
+        php artisan test

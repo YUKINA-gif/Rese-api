@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class BookingTest extends TestCase
 {
-    use RefreshDatabase;
+   
+    use DatabaseTransactions;
 
     /**
      * 初期データ準備
@@ -294,7 +296,7 @@ class BookingTest extends TestCase
      */
     public function tearDown(): void
     {
-        Artisan::call('migrate:refresh');
+        
         parent::tearDown();
     }
 }
