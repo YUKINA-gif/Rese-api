@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Database\Seeders\FavoriteSeeder;
@@ -14,7 +14,7 @@ use Database\Seeders\DatabaseSeeder;
 
 class FavoriteTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     /**
      * 初期データ準備
@@ -196,7 +196,6 @@ class FavoriteTest extends TestCase
      */
     public function tearDown(): void
     {
-        Artisan::call('migrate:refresh');
         parent::tearDown();
     }
 }

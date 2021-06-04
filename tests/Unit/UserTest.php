@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     /**
      * 初期データ準備
@@ -116,7 +116,6 @@ class UserTest extends TestCase
      */
     public function tearDown(): void
     {
-        Artisan::call('migrate:refresh');
         parent::tearDown();
     }
 }

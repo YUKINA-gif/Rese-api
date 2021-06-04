@@ -2,18 +2,16 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\DatabaseSeeder;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class BookingTest extends TestCase
 {
-   
-    use DatabaseTransactions;
+
+    use DatabaseMigrations;
 
     /**
      * 初期データ準備
@@ -256,13 +254,13 @@ class BookingTest extends TestCase
             "id" => "1",
             "user_id" => "1",
             "store_id" => "1",
-            "booking_date" => "2022/06/03",
-            "booking_time" => "19:30",
-            "booking_number" => 6
+            "booking_date" => "2022/06/20",
+            "booking_time" => "20:30",
+            "booking_number" => 2
         ];
 
         // 予約データ更新
-        $response = $this->put("api/booking",$booking_put);
+        $response = $this->put("api/booking", $booking_put);
         $response->assertStatus(200)->assertJsonFragment([
             "message" => "Booking updated successfully"
         ]);
@@ -278,11 +276,12 @@ class BookingTest extends TestCase
      */
     public function 正常系_ステータスコード200_booking_delete()
     {
-        // 予約データがある場合200を返す
+        // 予約データ
         $booking_delete = [
             "id" => "1",
             "user_id" => "1",
         ];
+
         $response = $this->delete("api/booking", $booking_delete);
         $response->assertStatus(200)->assertJsonFragment([
             "message" => "Booking deleted successfully"
@@ -296,7 +295,6 @@ class BookingTest extends TestCase
      */
     public function tearDown(): void
     {
-        
         parent::tearDown();
     }
 }

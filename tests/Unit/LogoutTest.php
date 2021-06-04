@@ -3,12 +3,11 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LogoutTest extends TestCase
 {
-    use RefreshDatabase;
-
+    use DatabaseMigrations;
     /**
      * [POST]ログアウト
      *
