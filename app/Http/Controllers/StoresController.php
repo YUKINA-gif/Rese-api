@@ -92,7 +92,7 @@ class StoresController extends Controller
      */
     public function seachStore(Request $request)
     {
-        $stores = Store::with("area","genre")->with("favorites", function ($q) use ($request) {
+        $stores = Store::with("area", "genre")->with("favorites", function ($q) use ($request) {
             $q->where("user_id", $request->user_id);
         })->when($request->name, function ($q) use ($request) {
             $q->where("name", "like", "%$request->name%");
