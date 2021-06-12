@@ -256,31 +256,4 @@ $ php artisan serve
 ```
 $ curl http://127.0.0.1:8000/api/stores/1
 ```
-下記のような店舗情報が返ってきたら成功です。
-
-```
-"item": {
-"store": [
-  {
-"id": 1,
-"area_id": "1",
-"genre_id": "1",
-"name": "仙人",
-"overview": "料理長厳選の食材から作る寿司を用いたコースをぜひお楽しみください。食材・味・価格、お客様の満足度を徹底的に追及したお店です。特別な日のお食事、ビジネス接待まで気軽に使用することができます。 ",
-"image": "https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/sushi.jpg",
-"area": null,
-"genre": null,
-"favorites": [],
-},
-  {
-"id": 2,
-"area_id": "2",
-"genre_id": "2",
-"name": "牛助",
-"overview": "焼肉業界で20年間経験を積み、肉を熟知したマスターによる実力派焼肉店。長年の実績とお付き合いをもとに、なかなか食べられない希少部位も仕入れております。また、ゆったりとくつろげる空間はお仕事終わりの一杯や女子会にぴったりです。",
-"image": "https://coachtech-matter.s3-ap-northeast-1.amazonaws.com/image/yakiniku.jpg",
-"area": null,
-"genre": null,
-"favorites": [],
-},...
-```
+店舗情報が返ってきたら成功です。
