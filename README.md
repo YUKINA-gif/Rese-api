@@ -221,7 +221,7 @@ $ composer update
 
 .env ファイルがないので作成します。
 
-ディレクトリ内の.env.example の名前を.env に変更します。
+Rese-apiディレクトリ直下にある.env.example の名前を.env に変更します。
 .env 内を下記のように編集します。
 
 ```
