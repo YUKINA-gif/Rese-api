@@ -21,7 +21,7 @@ use App\Http\Controllers\LogoutController;
 
 Route::get("/stores/{user_id}", [StoresController::class,"get"]);
 Route::get("/store/{id}", [StoresController::class,"getStore"]);
-Route::get("/storesSearch/{user_id}",[StoresController::class,"seachStore"]);
+Route::get("/storesSeach/{user_id}",[StoresController::class,"seachStore"]);
 Route::get("/user", [UsersController::class, "get"]);
 Route::post("/user", [UsersController::class, "post"]);
 Route::post("/login", [LoginController::class, "post"]);

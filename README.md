@@ -206,15 +206,16 @@ $ CREATE DATABASE rese;
 ## API Data Edit
 
 CLIを開きます。
-リポジトリをコピーします。
+任意の場所でリポジトリをコピーします。
 
 ```
 $ git clone https://github.com/YUKINA-gif/Rese-api.git
 ```
 
-vendor ディレクトリがないので入れます。
+Rese-apiディレクトリに移動し、vendor ディレクトリがないので入れます。
 
 ```
+$ cd Rese-api
 $ composer update
 ```
 
@@ -245,6 +246,8 @@ $ php artisan migrate
 
 $ php artisan db:seed --class=StoreSeeder
 ```
+
+Do you really wish to run this command? (yes/no)と聞かれるのでyesと入力し、Enterキーをクリック。
 
 店舗情報を取得し、正常に動作するか確認します。
 
