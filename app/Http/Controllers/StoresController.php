@@ -7,7 +7,6 @@ use App\Models\Area;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
  * [API]店舗情報取得 class
@@ -158,6 +157,44 @@ class StoresController extends Controller
     }
 
     /**
+     * [POST]店舗画像更新
+     * 
+     * 店舗情報を更新する
+     * 
+     * @access public
+     * @return Response 店舗画像更新
+     * @var array $image_pass  画像のパス
+     */
+    public function store_image_update(Request $request)
+    {
+        $request->validate([
+            "image" => ["image"],
+        ]);
+
+        $image_pass = Store::where("id", $request->id)->get("image");
+
+        foreach ($image_pass as $image) {
+            Storage::disk('s3')->delete($image->image);
+        };
+        $image = $request->image;
+        $path = Storage::disk('s3')->putFile('/', $image, 'public');
+        $image = [
+            "image" => $path,
+        ];
+        $image_update = Store::where("id", $request->id)->update($image);
+
+        if ($image_update) {
+            return response()->json([
+                "message" => "Store updated successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not Found"
+            ], 404);
+        }
+    }
+
+    /**
      * [PUT]店舗情報更新
      * 
      * 店舗情報を更新する
@@ -172,30 +209,17 @@ class StoresController extends Controller
             "id" => ["required", "numeric"],
             "name" => ["required", "string"],
             "overview" => ["required", "string"],
-            "image" => ["required", "image"],
             "area_id" => ["required", "numeric"],
             "genre_id" => ["required", "numeric"],
         ]);
 
-        $image_pass = Store::where("id", $request->id)->get("image");
+        $items = [
+            "name" => $request->name,
+            "overview" => $request->overview,
+            "area_id" => $request->area_id,
+            "genre_id" => $request->genre_id,
+        ];
 
-        foreach ($image_pass as $image) {
-            $result = Storage::disk('s3')->delete($image->image);
-        };
-
-        if ($result) {
-            $image = $request->image;
-            $path = Storage::disk('s3')->putFile('/', $image, 'public');
-
-            $items = [
-                "name" => $request->name,
-                "overview" => $request->overview,
-                "image" => $path,
-                "area_id" => $request->area_id,
-                "genre_id" => $request->genre_id,
-            ];
-        };
-        
         $result_update = Store::where("id", $request->id)->update($items);
 
         if ($result_update) {
@@ -224,18 +248,16 @@ class StoresController extends Controller
         $image_pass = Store::where("id", $request->id)->get("image");
 
         foreach ($image_pass as $image) {
-            $result = Storage::disk('s3')->delete($image->image);
+            Storage::disk('s3')->delete($image->image);
         };
+        $result = Store::where("id", $request->id)->delete();
         if ($result) {
-            Store::where("id", $request->id)->delete();
             return response()->json([
-                "message" => "Store deleted successfully",
-                "data" => $result
+                "message" => "Store deleted successfully"
             ], 200);
         } else {
             return response()->json([
-                "message" => "Not Found",
-                "data" => $image_pass,
+                "message" => "Not Found"
             ], 404);
         }
     }

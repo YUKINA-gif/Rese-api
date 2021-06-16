@@ -25,6 +25,7 @@ Route::get("/stores/{user_id}", [StoresController::class,"get"]);
 Route::get("/store/{id}", [StoresController::class,"getStore"]);
 Route::get("/storesSeach/{user_id}",[StoresController::class,"seachStore"]);
 Route::post("/stores", [StoresController::class, "post"]);
+Route::post("/storeImageUpdate", [StoresController::class, "store_image_update"]);
 Route::put("/stores", [StoresController::class, "put"]);
 Route::delete("/stores", [StoresController::class, "delete"]);
 Route::get("/user", [UsersController::class, "get"]);
