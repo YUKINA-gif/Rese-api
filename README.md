@@ -1,62 +1,262 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Rese API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+ある企業のグループ会社による飲食店予約サービスの API です
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   PHP 7.4.15
+-   Laravel 8.4
+-   MySQL 8.0
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installing
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+PHP,Composer(Laravel),MySQL
 
-## Learning Laravel
+### Mac
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### PHP
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Mac の場合は PHP が初めから入っているのでインストールする必要はありません。
 
-## Laravel Sponsors
+#### Composer
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Composer のインストールは [こちら](https://getcomposer.org/download/)
 
-### Premium Partners
+Manual Download から 2.0.11 のバージョンのリンクをクリック。
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+「ダウンロード」フォルダに「composer.phar」というファイルがダウンロードされます。
 
-## Contributing
+続いてターミナルを起動後、Download ディレクトリに移動し以下のコマンドを実行します。
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+$ cd Downloads
+$ sudo mv composer.phar /usr/local/bin/composer
+$ chmod a+x /usr/local/bin/composer
+$ composer -V
+```
 
-## Code of Conduct
+バージョンが返ってくればインストール成功です。
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### MySQL
 
-## Security Vulnerabilities
+パッケージマネージャーの Homebrew をインストールします。
+下記コマンドを入力します。
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
-## License
+インストール後下記のコマンドを入力して下さい。
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+$ brew install mysql
+$ brew services start mysql
+$ mysql --version
+```
+
+バージョンが返ってくれば成功です。
+
+次に MySQL の設定を行います。
+以下のコマンドを入力して下さい。
+
+```
+$ mysql_secure_installation
+```
+
+コマンドを実行すると最初に VALIDATE PASSWORD PLUGIN という強固なパスワード設定を助けるプラグインを使用するかどうかを質問されます。
+今回は何も入力せず Enter キーを押して次に進みます。
+
+root ユーザー(管理者)のパスワードを設定します
+
+New password - 新しいパスワードを設定
+
+Re-enter new password - 同じパスワードを入力
+
+入力中は何も表示されませんがそのまま入力してください。
+
+パスワードの設定が終わると複数の質問が続きますが、今回は Enter キーを押して設定をスキップします。
+
+All done!と表示されれば終了です。
+
+ログインは下記コマンドを入力で可能です。
+
+```
+$ mysql -u root -p
+```
+
+パスワードが聞かれるので、先ほど設定したパスワードを入力して下さい。
+
+「mysql>」と表示されて入力待ちとなったらログイン完了です。
+
+### Windows
+
+#### PHP
+
+PHP のインストールは[こちら](https://windows.php.net/download#php-7.4)
+
+PHP 7.4 (7.4.20)の Zip をクリックし、インストールします。
+
+フォルダを右クリックで「すべて展開」を押し展開します。
+
+フォルダ名を「php-7.4.20-nts-Win32-vc15-x64」のような名前から「php」に変更します。
+
+その後[コントロールパネル]→[システムとセキュリティ]→[システム]→[システムの詳細設定]→[環境変数]に移動し以下の操作を行います。
+
+ユーザー環境変数の Path を選択し編集を押します。
+参照を押し、先ほどの php フォルダを探し OK を押します。
+
+コマンドプロンプトを立ち上げて下記のコマンドを実行します。
+
+```
+$ php -v
+```
+
+バージョンが返ってくれば成功です。
+
+#### Composer
+
+Composer のインストールは [こちら](https://getcomposer.org/download/)
+
+Windows Installer に「Composer-Setup.exe」というリンクがあるのでインストーラをダウンロードしてください。
+
+ダウンロードしたインストーラを起動します。
+
+Installation Options - 起動すると画面に「Developer mode」というチェックボックスが表示された画面が現れるので OFF のまま次に進みます。
+
+Settings Check - デフォルトのまま次へ進みます。
+
+PHP Configuration Error - デフォルトのまま次へ進みます。
+
+Proxy Settings - デフォルトのまま次へ進みます。
+
+Ready to Install - Install を押します。
+完了したら Next を押し、その後 Finish を押して完了です。
+
+コマンドプロンプトを立ち上げて下記のコマンドを実行します。
+
+```
+$ composer -v
+```
+
+バージョンが返ってくれば成功です。
+
+#### MySQL
+
+MySQL のインストールは[こちら](https://dev.mysql.com/downloads/windows/installer/8.0.html)
+
+上から 2 つ目の Windows (x86, 32-bit), MSI Installer(メガが大きいほう)の Download ボタンをクリックします。
+
+ログインまたは登録を求められますが、ページ下記の「No thanks, just start my download.」をクリック。
+
+インストーラーのダウンロードが完了したらダウンロードしたファイルを開いてインストーラーを起動します。
+
+Choosing a Setup Type - Developer Default を選択
+
+Check Requirements - Next>をクリック
+
+One or more product requirements have not been satisified - Yes をクリック
+
+Installation - Execute をクリック。全てにチェックがつけば Next>をクリック。
+
+Product Configuration - Next>をクリック。
+
+Group Replication - 「Standalone MySQL Server / Classic MySQL Replication」が選択されていることを確認し、Next>をクリック。
+
+Type and Networking -
+Config Type で「Development Computer」が選択されているか確認。Next>をクリック。
+
+Authentication Method - 「Use Strong Password Encryption for Authentication 」が選択されていることを確認し、Next>をクリック。
+
+Accounts and Roles - MySQL Root Password と Repeat Password に MySQL の管理者用パスワードを入力し、Next>をクリック。
+MySQL User Accounts は空のまま。
+
+Windows Service - Next>をクリック。
+
+Apply Configuration - Excute をクリックし、全て緑色のチェックマークが付いたら Finish をクリック。
+
+Product Configuration - Next>をクリック。
+
+MySQL Server Configuration - Finish をクリック。
+
+Product Configuration - Next>をクリック。
+
+Connect To Server - Password 欄に先ほど設定した MySQL の管理者用パスワードを入力し、Check をクリック。
+
+All connections succeeded.と表示されたら Next>をクリック。
+
+Apply Configuration - Excute をクリックし、全て緑色のチェックマークが付いたら Finish をクリック。
+
+Product Configuration - Next>をクリック。
+
+Installation Complete - Finish をクリック。
+
+左下のスタートメニューから「MySQL Command Line Client」を開き「Enter password」に「MySQL Root Password」で指定したパスワードを入力します。「mysql>」と表示されて入力待ちとなったらログイン完了です。
+
+## Database Preparation
+
+開発用のデータベースを用意します。
+
+MySQL にログインします。
+下記コマンドを入力し、データベースを作成しておきます。
+
+```
+$ CREATE DATABASE rese;
+```
+
+## API Data Edit
+
+CLIを開きます。
+任意の場所でリポジトリをコピーします。
+
+```
+$ git clone https://github.com/YUKINA-gif/Rese-api.git
+```
+
+Rese-apiディレクトリに移動し、vendor ディレクトリがないので入れます。
+
+```
+$ cd Rese-api
+$ composer update
+```
+
+.env ファイルがないので作成します。
+
+Rese-apiディレクトリ直下にある.env.example の名前を.env に変更します。
+.env 内を下記のように編集します。
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rese
+DB_USERNAME=root
+DB_PASSWORD=MySQLログイン用パスワード
+```
+
+キーを発行するため下記コマンドを入力します。
+
+```
+$ php artisan key:generate
+```
+
+データベースにデータを用意し、店舗情報を用意します。
+
+```
+$ php artisan migrate
+
+$ php artisan db:seed --class=StoreSeeder
+```
+
+Do you really wish to run this command? (yes/no)と聞かれるのでyesと入力し、Enterキーをクリック。
+
+店舗情報を取得し、正常に動作するか確認します。
+
+ローカルサーバーを立ち上げ、
+```
+$ php artisan serve
+```
+別のCLIを開き、APIをたたきます。
+```
+$ curl http://127.0.0.1:8000/api/stores/1
+```
+店舗情報が返ってきたら成功です。
