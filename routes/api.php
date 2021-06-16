@@ -35,6 +35,7 @@ Route::post("/logout", [LogoutController::class, "post"]);
 Route::get("/user/{user_id}/favorite", [FavoritesController::class, "get"]);
 Route::post("/favorite", [FavoritesController::class, "favorites"]);
 Route::get("/user/{user_id}/booking", [BookingController::class, "get"]);
+Route::get("/booking", [BookingController::class, "get_all_bookings"]);
 Route::post("/booking", [BookingController::class, "post"]);
 Route::put("/booking", [BookingController::class, "put"]);
 Route::delete("/booking", [BookingController::class, "delete"]);

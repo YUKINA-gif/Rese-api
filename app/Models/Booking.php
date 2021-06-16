@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = "bookings";
 
@@ -30,4 +32,8 @@ class Booking extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    protected $casts = [
+        'booking_date' => 'date:Y年m月d日',
+    ];
 }

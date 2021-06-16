@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use Carbon\Carbon;
+use App\Models\Store;
 
 /**
  * [API]予約機能API class
@@ -132,6 +133,31 @@ class BookingController extends Controller
         if ($booking_del) {
             return response()->json([
                 "message" => "Booking deleted successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
+        }
+    }
+
+    /**
+     * [GET]予約取得(管理用)
+     *
+     *  全ての予約一覧を取得する
+     * 
+     * @access public
+     * @param Request $request  リクエストパラメータ
+     * @return Response  予約全データ表示
+     * @var array $data ユーザーID(リクエスト)から予約一覧を探す
+     */
+    public function get_all_bookings(Request $request)
+    {
+        $data = Booking::with("store", "user")->withTrashed()->get();
+
+        if (!empty($data->toArray())) {
+            return response()->json([
+                "booking" => $data
             ], 200);
         } else {
             return response()->json([
