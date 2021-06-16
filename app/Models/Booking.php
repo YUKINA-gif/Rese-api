@@ -11,6 +11,8 @@ class Booking extends Model
 
     protected $table = "bookings";
 
+    const DELETED_AT = "is_booking";
+
     protected $fillable = [
         "store_id",
         "user_id",

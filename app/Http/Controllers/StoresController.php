@@ -6,6 +6,8 @@ use App\Models\Store;
 use App\Models\Area;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * [API]店舗情報取得 class
@@ -109,6 +111,131 @@ class StoresController extends Controller
         } else {
             return response()->json([
                 "message" => "Not found"
+            ], 404);
+        }
+    }
+
+    /**
+     * [POST]店舗登録
+     * 
+     * 店舗を登録する
+     * 
+     * @access public
+     * @return Response 店舗登録
+     * @var array $store  店舗詳細データ
+     */
+    public function post(Request $request)
+    {
+        $request->validate([
+            "name" => ["required", "string"],
+            "overview" => ["required", "string"],
+            "image" => ["required", "image"],
+            "area_id" => ["required", "numeric"],
+            "genre_id" => ["required", "numeric"],
+        ]);
+
+        $image = $request->image;
+        $path = Storage::disk('s3')->putFile('/', $image, 'public');
+
+        $store = new Store;
+        $result = $store->fill([
+            "name" => $request->name,
+            "overview" => $request->overview,
+            "image" => $path,
+            "area_id" => $request->area_id,
+            "genre_id" => $request->genre_id,
+        ])->save();
+
+        if ($result) {
+            return response()->json([
+                "message" => "Store created successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "An error has occurred"
+            ], 404);
+        }
+    }
+
+    /**
+     * [PUT]店舗情報更新
+     * 
+     * 店舗情報を更新する
+     * 
+     * @access public
+     * @return Response 店舗登録
+     * @var array $store  店舗詳細データ
+     */
+    public function put(Request $request)
+    {
+        $request->validate([
+            "id" => ["required", "numeric"],
+            "name" => ["required", "string"],
+            "overview" => ["required", "string"],
+            "image" => ["required", "image"],
+            "area_id" => ["required", "numeric"],
+            "genre_id" => ["required", "numeric"],
+        ]);
+
+        $image_pass = Store::where("id", $request->id)->get("image");
+
+        foreach ($image_pass as $image) {
+            $result = Storage::disk('s3')->delete($image->image);
+        };
+
+        if ($result) {
+            $image = $request->image;
+            $path = Storage::disk('s3')->putFile('/', $image, 'public');
+
+            $items = [
+                "name" => $request->name,
+                "overview" => $request->overview,
+                "image" => $path,
+                "area_id" => $request->area_id,
+                "genre_id" => $request->genre_id,
+            ];
+        };
+        
+        $result_update = Store::where("id", $request->id)->update($items);
+
+        if ($result_update) {
+            return response()->json([
+                "message" => "Store updated successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not Found"
+            ], 404);
+        }
+    }
+
+    /**
+     * [DELETE]店舗削除
+     * 
+     * 店舗を削除する
+     * 
+     * @access public
+     * @return Response 店舗削除
+     * @var array $store  店舗詳細データ
+     */
+    public function delete(Request $request)
+    {
+
+        $image_pass = Store::where("id", $request->id)->get("image");
+
+        foreach ($image_pass as $image) {
+            $result = Storage::disk('s3')->delete($image->image);
+        };
+        if ($result) {
+            Store::where("id", $request->id)->delete();
+            return response()->json([
+                "message" => "Store deleted successfully",
+                "data" => $result
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not Found",
+                "data" => $image_pass,
             ], 404);
         }
     }

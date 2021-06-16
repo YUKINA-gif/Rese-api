@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBookingsTable extends Migration
+class CreateManagersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateBookingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bookings', function (Blueprint $table) {
+        Schema::create('managers', function (Blueprint $table) {
             $table->id();
-            $table->string("store_id");
-            $table->string("user_id");
-            $table->softDeletes("is_booking");
-            $table->date("booking_date");
-            $table->time("booking_time");
-            $table->integer("booking_number");
+            $table->string('login_id')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateBookingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('managers');
     }
 }
