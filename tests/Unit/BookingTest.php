@@ -200,13 +200,13 @@ class BookingTest extends TestCase
         $response->assertStatus(200)->assertJsonFragment([
             "user_id" => "1",
             "store_id" => "1",
-            "booking_date" => "2025-05-30",
+            "booking_date" => "2025年05月30日",
             "booking_time" => "18:00:00",
             "booking_number" => 2,
         ], [
             "user_id" => "1",
             "store_id" => "5",
-            "booking_date" => "2025-06-01",
+            "booking_date" => "2025年06月01日",
             "booking_time" => "19:00:00",
             "booking_number" => 4,
         ]);
