@@ -27,7 +27,7 @@ class BookingFactory extends Factory
             "user_id" => $this->faker->numberBetween($min = 1, $max = 15),
             "booking_date" => $this->faker->dateTimeBetween($startDate = "now",$endDate = "+1 month"),
             "booking_time" => $this->faker->time(),
-            "booking_number" => $this->faker->randomDigit()
+            "booking_number" => $this->faker->numberBetween($min = 1, $max = 10)
         ];
     }
 }

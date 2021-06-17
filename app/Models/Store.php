@@ -32,4 +32,12 @@ class Store extends Model
         "created_at",
         'updated_at',
     ];
+
+    protected $fillable = [
+        "name",
+        'overview',
+        "image",
+        "area_id",
+        "genre_id"
+    ];
 }

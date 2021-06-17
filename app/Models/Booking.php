@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = "bookings";
+
+    const DELETED_AT = "is_booking";
 
     protected $fillable = [
         "store_id",
@@ -28,4 +32,8 @@ class Booking extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    protected $casts = [
+        'booking_date' => 'date:Y年m月d日',
+    ];
 }
