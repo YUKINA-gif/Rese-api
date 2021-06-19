@@ -4,10 +4,10 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class LoginTest extends TestCase
+class ManagerTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -22,12 +22,11 @@ class LoginTest extends TestCase
     {
         parent::setUp();
 
-        $user = new User;
-        $user->fill([
-            "name" => "test",
-            "email" => "test@test.com",
-            "password" => Hash::make("testtest"),
-        ])->save();
+        $manager = [
+            "login_id" => "01",
+            "password" => Hash::make("Pass1234"),
+        ];
+        DB::table("managers")->insert($manager);
     }
 
     /**
@@ -41,11 +40,11 @@ class LoginTest extends TestCase
      */
     public function 異常系_ステータスコード500_login_post_noDatabase()
     {
-        $user = [
-            "email" => "abc@def.com",
+        $manager = [
+            "login_id" => "abcdef12",
             "password" => "abcdefgh",
         ];
-        $response = $this->post("api/login", $user);
+        $response = $this->post("api/manage/login", $manager);
         $response->assertStatus(500);
     }
 
@@ -60,8 +59,23 @@ class LoginTest extends TestCase
      */
     public function 異常系_ステータスコード302_login_post()
     {
-        $response = $this->post("api/login");
+        $response = $this->post("api/manage/login");
         $response->assertStatus(302);
+    }
+
+    /**
+     * [POST]パスワード発行
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード500_create_pass_post()
+    {
+        $response = $this->post("api/manage/create");
+        $response->assertStatus(500);
     }
 
     /**
@@ -74,13 +88,32 @@ class LoginTest extends TestCase
      */
     public function 正常系_ステータスコード200_login_post()
     {
-        $user_data = [
-            "email" => "test@test.com",
-            "password" => "testtest",
+        $manager = [
+            "login_id" => "01",
+            "password" => "Pass1234",
         ];
-        $response = $this->post("api/login", $user_data);
+        $response = $this->post("api/manage/login", $manager);
         $response->assertStatus(200)->assertJsonFragment([
             "auth" => true
+        ]);
+    }
+
+    /**
+     * [POST]パスワード発行
+     *
+     * 正常系
+     * 
+     * @return void
+     * @test
+     */
+    public function 正常系_ステータスコード200_create_pass_post()
+    {
+        $login_id = [
+            "login_id" => "159"
+        ];
+        $response = $this->post("api/manage/create", $login_id);
+        $response->assertStatus(200)->assertJsonFragment([
+            "message" => "Store manager created successfully"
         ]);
     }
 

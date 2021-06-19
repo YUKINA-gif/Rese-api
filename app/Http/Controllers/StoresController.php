@@ -189,7 +189,7 @@ class StoresController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "message" => "Not Found"
+                "message" => "Not found"
             ], 404);
         }
     }
@@ -228,7 +228,7 @@ class StoresController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "message" => "Not Found"
+                "message" => "Not found"
             ], 404);
         }
     }
@@ -257,7 +257,7 @@ class StoresController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "message" => "Not Found"
+                "message" => "Not found"
             ], 404);
         }
     }

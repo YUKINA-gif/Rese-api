@@ -44,7 +44,6 @@ class StoresTest extends TestCase
      * 
      * @return void
      * @test
-     * @group testing
      */
     public function 異常系_ステータスコード404_stores_get()
     {
@@ -66,12 +65,86 @@ class StoresTest extends TestCase
      * 
      * @return void
      * @test
-     * @group testing
      */
     public function 異常系_ステータスコード404_store_get()
     {
         // 店舗データがない場合は404を返す
         $response = $this->get("api/store/150");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [GET]店舗検索
+     *
+     * 異常系
+     * データ情報がない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_store_seach()
+    {
+        // 初期準備した店舗データを削除
+        Artisan::call('migrate:refresh');
+
+        // 指定店舗データがない場合は404で返す
+        $response = $this->get("api/storesSearch/0");
+        $response->assertStatus(404)->assertJsonFragment([
+            "message" => "Not found"
+        ]);
+    }
+
+    /**
+     * [POST]店舗登録
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード302_store_post()
+    {
+        $response = $this->post("/api/stores");
+        $response->assertStatus(302);
+    }
+
+    /**
+     * [PUT]店舗情報更新
+     *
+     * 異常系
+     * リクエストパラメータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード302_store_put()
+    {
+        $response = $this->put("/api/stores");
+        $response->assertStatus(302);
+    }
+
+    /**
+     * [PUT]店舗情報更新
+     *
+     * 異常系
+     * DBにデータがない場合
+     * 
+     * @return void
+     * @test
+     */
+    public function 異常系_ステータスコード404_store_put()
+    {
+        $store = [
+            "id" => "200",
+            "name" => "一楽",
+            "overview" => "数日かけて煮込んだ豚骨スープが自慢のお店です。",
+            "area_id" => "2",
+            "genre_id" => "5"
+        ];
+        $response = $this->put("/api/stores", $store);
         $response->assertStatus(404)->assertJsonFragment([
             "message" => "Not found"
         ]);
@@ -85,7 +158,6 @@ class StoresTest extends TestCase
      * 
      * @return void
      * @test
-     * @group testing
      */
     public function 正常系_ステータスコード200_stores_get()
     {
@@ -106,7 +178,6 @@ class StoresTest extends TestCase
      * 
      * @return void
      * @test
-     * @group testing
      */
     public function 正常系_ステータスコード200_store_get()
     {
@@ -122,45 +193,46 @@ class StoresTest extends TestCase
     /**
      * [GET]店舗検索
      *
-     * 異常系
-     * データ情報がない場合
-     * 
-     * @return void
-     * @test
-     * @group testing
-     */
-    public function 異常系_ステータスコード404_store_seach()
-    {
-        // 初期準備した店舗データを削除
-        Artisan::call('migrate:refresh');
-
-        // 指定店舗データがない場合は404で返す
-        $response = $this->get("api/storesSeach/0");
-        $response->assertStatus(404)->assertJsonFragment([
-            "message" => "Not found"
-        ]);
-    }
-
-    /**
-     * [GET]店舗検索
-     *
      * 正常系
      * データ情報がない場合
      * 
      * @return void
      * @test
-     * @group testing
      */
     public function 正常系_ステータスコード200_store_seach()
     {
         // 指定店舗データがある場合は200で返す
-        $response = $this->get("api/storesSeach/0");
+        $response = $this->get("api/storesSearch/0");
         $response->assertStatus(200)->assertJsonFragment([
             "area_id" => "1",
             "genre_id" => "1",
             "name" => "仙人"
         ]);
     }
+
+    /**
+     * [PUT]店舗情報更新
+     *
+     * 正常系
+     * 
+     * @return void
+     * @test
+     */
+    public function 正常系_ステータスコード200_store_put()
+    {
+        $store = [
+            "id" => "20",
+            "name" => "一楽",
+            "overview" => "数日かけて煮込んだ豚骨スープが自慢のお店です。",
+            "area_id" => "2",
+            "genre_id" => "5"
+        ];
+        $response = $this->put("/api/stores", $store);
+        $response->assertStatus(200)->assertJsonFragment([
+            "message" => "Store updated successfully"
+        ]);
+    }
+
     /**
      * データリフレッシュ
      * 

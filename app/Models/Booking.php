@@ -33,7 +33,7 @@ class Booking extends Model
         return $this->belongsTo(Store::class);
     }
 
-    // protected $casts = [
-    //     'booking_date' => 'date:Y年m月d日',
-    // ];
+    protected $casts = [
+        'booking_date' => 'date:Y年m月d日',
+    ];
 }
