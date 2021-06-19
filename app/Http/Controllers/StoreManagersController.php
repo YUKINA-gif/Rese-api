@@ -11,34 +11,6 @@ use Illuminate\Support\Str;
 class StoreManagersController extends Controller
 {
     /**
-     * [GET]ストアマネージャー情報の取得
-     *
-     *　入力値（ログインID）から
-     *  ストアマネージャー情報を取得する
-     * 
-     * @access public
-     * @param Request $request  リクエストパラメータ
-     * @return Response  ストアマネージャー情報の取得、ない場合は404で返す
-     */
-    public function get(Request $request)
-    {
-        if ($request->has('login_id')) {
-            $StoreManager = StoreManager::where('login_id', $request->login_id)->first();
-        }
-
-        if ($StoreManager) {
-            return response()->json([
-                'message' => 'StoreManager got successfully',
-                'storeManager' => $StoreManager
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Not found'
-            ], 404);
-        }
-    }
-
-    /**
      * [POST]店舗代表者権限発行
      * 
      * 入力値からIDとパスワードの登録

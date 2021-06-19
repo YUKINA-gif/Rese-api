@@ -2,6 +2,10 @@
 
 ある企業のグループ会社による飲食店予約サービスの API です
 
+## API Document
+
+APIドキュメントは[こちら](https://rese-apidocument.netlify.app)
+
 ## Prerequisites
 
 -   PHP 7.4.15

@@ -88,10 +88,10 @@ class StoresController extends Controller
      * 店舗検索データを取得する
      * 
      * @access public
-     * @return Response 店舗詳細データ表示
-     * @var array $store  店舗詳細データ
+     * @return Response 店舗検索データ表示
+     * @var array $store  店舗検索データ
      */
-    public function seachStore(Request $request)
+    public function searchStore(Request $request)
     {
         $stores = Store::with("area", "genre")->with("favorites", function ($q) use ($request) {
             $q->where("user_id", $request->user_id);
@@ -185,7 +185,7 @@ class StoresController extends Controller
 
         if ($image_update) {
             return response()->json([
-                "message" => "Store updated successfully"
+                "message" => "Store image updated successfully"
             ], 200);
         } else {
             return response()->json([

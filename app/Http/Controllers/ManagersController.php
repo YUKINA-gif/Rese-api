@@ -11,34 +11,6 @@ use Illuminate\Support\Str;
 class ManagersController extends Controller
 {
     /**
-     * [GET]マネージャー情報の取得
-     *
-     *　入力値（ログインID）から
-     *  マネージャー情報を取得する
-     * 
-     * @access public
-     * @param Request $request  リクエストパラメータ
-     * @return Response  マネージャー情報の取得、ない場合は404で返す
-     */
-    public function get(Request $request)
-    {
-        if ($request->has('login_id')) {
-            $manager = Manager::where('login_id', $request->login_id)->first();
-        }
-
-        if ($manager) {
-            return response()->json([
-                'message' => 'Manager got successfully',
-                'manager' => $manager
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Not found'
-            ], 404);
-        }
-    }
-
-    /**
      * [POST]管理者権限発行(ランダム数値)
      * 
      * IDとパスワードの生成(ランダムな文字列8)
