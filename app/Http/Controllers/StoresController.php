@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Storage;
  * [API]店舗情報取得 class
  * 
  * 店舗情報取得に関するコントローラー
- * 店舗一覧取得、店舗詳細データ取得
+ * 店舗一覧、詳細データ取得
+ * 店舗登録、更新、削除
  * 
  * @access public
  * @author Nakanishi Yukina
@@ -27,6 +28,7 @@ class StoresController extends Controller
      * 店舗全データを取得する
      * 
      * @access public
+     * @param Request $request  リクエストパラメータ
      * @return Response 店舗一覧表示
      * @var array $stores  店舗全データ
      * @var array $area  エリア一覧
@@ -64,7 +66,8 @@ class StoresController extends Controller
      * 店舗詳細データを取得する
      * 
      * @access public
-     * @return Response 店舗詳細データ表示
+     * @param Request $request  リクエストパラメータ
+     * @return Response 店舗詳細データ表示　エリア、ジャンルも取得
      * @var array $store  店舗詳細データ
      */
     public function getStore(Request $request)
@@ -88,17 +91,22 @@ class StoresController extends Controller
      * 店舗検索データを取得する
      * 
      * @access public
+     * @param Request $request  リクエストパラメータ
      * @return Response 店舗検索データ表示
-     * @var array $store  店舗検索データ
+     * @var array $stores  店舗検索データ
      */
     public function searchStore(Request $request)
     {
         $stores = Store::with("area", "genre")->with("favorites", function ($q) use ($request) {
+            // ユーザーIDからお気に入り情報を探す
             $q->where("user_id", $request->user_id);
+            // 店名(入力値)から該当店舗を探す
         })->when($request->name, function ($q) use ($request) {
             $q->where("name", "like", "%$request->name%");
+            // エリア(入力値)から該当エリア店舗を探す　
         })->when($request->area_id, function ($q) use ($request) {
             $q->where("area_id", $request->area_id);
+            // ジャンル(入力値)から該当エリア店舗を探す
         })->when($request->genre_id, function ($q) use ($request) {
             $q->where("genre_id", $request->genre_id);
         })->get();
@@ -120,11 +128,16 @@ class StoresController extends Controller
      * 店舗を登録する
      * 
      * @access public
+     * @param Request $request  リクエストパラメータ
      * @return Response 店舗登録
-     * @var array $store  店舗詳細データ
+     * @var array $store  リクエスト店舗詳細データ
+     * @var image $image 画像(リクエスト)
+     * @var string $path $imageをS3に保存しパスを取得
+     * @var array $result リクエスト店舗詳細データをDBに保存
      */
     public function post(Request $request)
     {
+        // バリデーション設定
         $request->validate([
             "name" => ["required", "string"],
             "overview" => ["required", "string"],
@@ -134,6 +147,7 @@ class StoresController extends Controller
         ]);
 
         $image = $request->image;
+        // S3に画像を保存
         $path = Storage::disk('s3')->putFile('/', $image, 'public');
 
         $store = new Store;
@@ -159,29 +173,40 @@ class StoresController extends Controller
     /**
      * [POST]店舗画像更新
      * 
-     * 店舗情報を更新する
+     * 店舗画像を更新する
      * 
      * @access public
+     * @param Request $request  リクエストパラメータ
      * @return Response 店舗画像更新
-     * @var array $image_pass  画像のパス
+     * @var string $image_pass  画像のパス
+     * @var array $image  パスを配列に入れ回す
+     * @var string $req_image  画像(リクエスト)
+     * @var array $image_box  画像(リクエスト)のパスを入れる用の配列
+     * @var string $image_update 画像(リクエスト)をDBに更新
      */
     public function store_image_update(Request $request)
     {
+        // バリデーション設定
         $request->validate([
-            "image" => ["image"],
+            "image" => ["required", "image"],
         ]);
-
+        // DBから画像を取得
         $image_pass = Store::where("id", $request->id)->get("image");
-
+        // 取得した画像をS3から削除する
         foreach ($image_pass as $image) {
             Storage::disk('s3')->delete($image->image);
         };
-        $image = $request->image;
-        $path = Storage::disk('s3')->putFile('/', $image, 'public');
-        $image = [
+        // 画像(リクエスト)
+        $req_image = $request->image;
+        // 画像(リクエスト)をS3に保存
+        $path = Storage::disk('s3')->putFile('/', $req_image, 'public');
+
+        // S3へ入れた際のパスを取得し、
+        $image_box = [
             "image" => $path,
         ];
-        $image_update = Store::where("id", $request->id)->update($image);
+        // 画像(リクエスト)をDBに更新
+        $image_update = Store::where("id", $request->id)->update($image_box);
 
         if ($image_update) {
             return response()->json([
@@ -200,11 +225,14 @@ class StoresController extends Controller
      * 店舗情報を更新する
      * 
      * @access public
+     * @param Request $request  リクエストパラメータ
      * @return Response 店舗登録
-     * @var array $store  店舗詳細データ
+     * @var array $items 店舗データ(リクエスト)
+     * @var array $result_update 店舗データ(リクエスト)をDBへ更新
      */
     public function put(Request $request)
     {
+        // バリデーション設定
         $request->validate([
             "id" => ["required", "numeric"],
             "name" => ["required", "string"],
@@ -239,8 +267,11 @@ class StoresController extends Controller
      * 店舗を削除する
      * 
      * @access public
+     * @param Request $request  リクエストパラメータ
      * @return Response 店舗削除
-     * @var array $store  店舗詳細データ
+     * @var string $image_pass DBから画像のパスを取得
+     * @var array $image  パスを配列に入れ回す
+     * @var string $result ID(リクエスト)から店舗を削除
      */
     public function delete(Request $request)
     {

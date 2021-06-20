@@ -25,9 +25,9 @@ class LoginController extends Controller
      * ログイン可能かどうか確かめる
      * 
      * @access public
-     * @param Request $request リクエストパラメーター
+     * @param Request $request リクエストパラメータ
      * @return Response ログイン可もしくは不可
-     * @var object $items  メールアドレス(入力値)からデータベース内のユーザー情報を探す
+     * @var object $items  メールアドレス(リクエスト)からデータベース内のユーザー情報を探す
      */
     public function post(Request $request)
     {

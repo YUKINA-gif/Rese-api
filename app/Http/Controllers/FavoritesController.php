@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Favorite;
-use App\Models\User;
-use App\Models\Store;
 use Carbon\Carbon;
 
 /**
@@ -30,7 +28,7 @@ class FavoritesController extends Controller
      * @access public
      * @param Request $request  リクエストパラメータ
      * @return Response  お気に入り店舗一覧表示
-     * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す
+     * @var array $data ユーザーID(リクエスト)からお気に入り店舗を探す エリアとジャンルも取得
      */
     public function get(Request $request)
     {
@@ -59,7 +57,7 @@ class FavoritesController extends Controller
      * @access public
      * @param Request $request リクエストパラメータ
      * @return Response お気に入り登録,復元,削除
-     * @var timestamps $now  登録日時
+     * @var timestamps $now  現在日時
      * @var array $favorite  新規レコード
      * @var array $seach_myfavorite すでに登録されているか調べる
      */

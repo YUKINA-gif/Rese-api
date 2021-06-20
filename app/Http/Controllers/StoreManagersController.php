@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
+/**
+ * [API]店舗代表者API class
+ * 
+ * 店舗代表者に関するコントローラー
+ * 
+ * @access public
+ * @author Nakanishi Yukina
+ * @category Manager
+ * @package Controller
+ */
 class StoreManagersController extends Controller
 {
     /**
@@ -19,6 +29,8 @@ class StoreManagersController extends Controller
      * @param Request $request リクエストパラメータ
      * @return Response 登録完了
      * @var timestamps $now  登録日時
+     * @var string $login_id  ログインID(リクエスト)
+     * @var string $password  ランダム生成したパスワード
      * @var string $hashed_password  ハッシュしたパスワード
      * @var array $store_manager  新規レコード
      * @var object 
@@ -56,9 +68,9 @@ class StoreManagersController extends Controller
      * ログイン可能かどうか確かめる
      * 
      * @access public
-     * @param Request $request リクエストパラメーター
+     * @param Request $request リクエストパラメータ
      * @return Response ログイン可もしくは不可
-     * @var object $items  ログインID(入力値)からデータベース内の情報を探す
+     * @var object $items  ログインID(リクエスト)からデータベース内の情報を探す
      */
     public function login(Request $request)
     {
