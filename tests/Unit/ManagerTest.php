@@ -72,10 +72,10 @@ class ManagerTest extends TestCase
      * @return void
      * @test
      */
-    public function 異常系_ステータスコード500_create_pass_post()
+    public function 異常系_ステータスコード302_create_pass_post()
     {
         $response = $this->post("api/manage/create");
-        $response->assertStatus(500);
+        $response->assertStatus(302);
     }
 
     /**

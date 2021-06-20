@@ -117,10 +117,10 @@ class BookingTest extends TestCase
      * @return void
      * @test
      */
-    public function 異常系_ステータスコード404_booking_put()
+    public function 異常系_ステータスコード302_booking_put()
     {
         $response = $this->put("api/booking");
-        $response->assertStatus(404);
+        $response->assertStatus(302);
     }
 
     /**
