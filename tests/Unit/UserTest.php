@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Models\User;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
 

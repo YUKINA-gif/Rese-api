@@ -24,7 +24,7 @@ class UsersController extends Controller
     /**
      * [GET]ユーザー情報の取得
      *
-     *　入力値（メールアドレス）から
+     *　メールアドレス(リクエスト)から
      *  ユーザー情報を取得する
      * 
      * @access public
