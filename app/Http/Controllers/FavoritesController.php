@@ -46,9 +46,7 @@ class FavoritesController extends Controller
     }
 
     /**
-     * [POST]お気に入り登録
-     * [PUT]復元
-     * [DELETE]削除
+     * [POST]お気に入り登録,復元,削除
      * 
      * お気に入り店舗を登録する
      * すでに登録されていれば削除、

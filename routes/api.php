@@ -25,10 +25,6 @@ use App\Http\Controllers\StoreManagersController;
 Route::get("/stores/{user_id}", [StoresController::class, "get"]);
 Route::get("/store/{id}", [StoresController::class, "getStore"]);
 Route::get("/storesSearch/{user_id}", [StoresController::class, "searchStore"]);
-Route::post("/stores", [StoresController::class, "post"]);
-Route::post("/storeImageUpdate", [StoresController::class, "store_image_update"]);
-Route::put("/stores", [StoresController::class, "put"]);
-Route::delete("/stores", [StoresController::class, "delete"]);
 Route::get("/user", [UsersController::class, "get"]);
 Route::post("/user", [UsersController::class, "post"]);
 Route::post("/login", [LoginController::class, "post"]);
@@ -40,8 +36,15 @@ Route::get("/booking", [BookingController::class, "get_all_bookings"]);
 Route::post("/booking", [BookingController::class, "post"]);
 Route::put("/booking", [BookingController::class, "put"]);
 Route::delete("/booking", [BookingController::class, "delete"]);
-// 管理者API
+
+// 店舗代表者用API
+Route::post("/stores", [StoresController::class, "post"]);
+Route::post("/storeImageUpdate", [StoresController::class, "store_image_update"]);
+Route::put("/stores", [StoresController::class, "put"]);
+Route::delete("/stores", [StoresController::class, "delete"]);
+Route::post("/manage/storeManager/login", [StoreManagersController::class, "login"]);
+
+// 管理者用API
 Route::post("/manage/create", [ManagersController::class, "post"]);
 Route::post("/manage/login", [ManagersController::class, "login"]);
 Route::post("/manage/storeManager/create", [StoreManagersController::class, "post"]);
-Route::post("/manage/storeManager/login", [StoreManagersController::class, "login"]);
