@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use Carbon\Carbon;
-use App\Models\Store;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingMail;
+use App\Mail\BookingCancelMail;
+use App\Models\User;
 
 /**
  * [API]予約機能API class
@@ -72,7 +75,8 @@ class BookingController extends Controller
         ]);
 
         $booking = new Booking;
-        $booking->fill([
+        
+        $result = $booking->fill([
             "user_id" => $request->user_id,
             "store_id" => $request->store_id,
             "booking_date" => $request->booking_date,
@@ -82,6 +86,10 @@ class BookingController extends Controller
             "updated_at" => $now,
         ])->save();
 
+        if($result){
+            $user = User::where("id",$request->user_id)->first();
+            Mail::to($user->email)->send(new BookingMail($user));
+        }
         return response()->json([
             "message" => "Booking successfully"
         ], 200);
@@ -141,6 +149,11 @@ class BookingController extends Controller
     public function delete(Request $request)
     {
         $booking_del = Booking::where("id", $request->id)->where("user_id", $request->user_id)->delete();
+
+        if ($booking_del) {
+            $user = User::where("id", $request->user_id)->first();
+            Mail::to($user->email)->send(new BookingCancelMail($user));
+        }
 
         if ($booking_del) {
             return response()->json([
