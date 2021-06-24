@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterMail;
 use Carbon\Carbon;
 
 /**
@@ -75,14 +77,17 @@ class UsersController extends Controller
         ]);
 
         $param = new User;
-        $param->fill([
+        $result = $param->fill([
             "name" => $request->name,
             "email" => $request->email,
             "password" => $hashed_password,
             "created_at" => $now,
             "updated_at" => $now,
-        ]);
-        $param->save();
+        ])->save();
+
+        if ($result) {
+            Mail::to($param->email)->send(new RegisterMail($param));
+        }
 
         return response()->json([
             'message' => 'User created successfully'

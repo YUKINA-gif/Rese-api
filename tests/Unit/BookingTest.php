@@ -178,7 +178,7 @@ class BookingTest extends TestCase
         $response->assertStatus(200)->assertJsonFragment([
             "store_id" => "4",
             "user_id" => "2",
-            "booking_date" => "2025年06月03日",
+            "booking_date" => "2025-06-03",
             "booking_time" => "18:30:00",
             "booking_number" => 3,
         ]);
@@ -200,13 +200,13 @@ class BookingTest extends TestCase
         $response->assertStatus(200)->assertJsonFragment([
             "user_id" => "1",
             "store_id" => "1",
-            "booking_date" => "2025年05月30日",
+            "booking_date" => "2025-05-30",
             "booking_time" => "18:00:00",
             "booking_number" => 2,
         ], [
             "user_id" => "1",
             "store_id" => "5",
-            "booking_date" => "2025年06月01日",
+            "booking_date" => "2025-06-01",
             "booking_time" => "19:00:00",
             "booking_number" => 4,
         ]);
