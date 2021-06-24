@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Booking;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
+use Illuminate\Support\Str;
 
 class BookingFactory extends Factory
 {
@@ -27,7 +27,8 @@ class BookingFactory extends Factory
             "user_id" => $this->faker->numberBetween($min = 1, $max = 15),
             "booking_date" => $this->faker->dateTimeBetween($startDate = "now",$endDate = "+1 month"),
             "booking_time" => $this->faker->time(),
-            "booking_number" => $this->faker->numberBetween($min = 1, $max = 10)
+            "booking_number" => $this->faker->numberBetween($min = 1, $max = 10),
+            "qrcode" => (string) Str::uuid()
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BookingMail extends Mailable
 {
@@ -15,9 +16,10 @@ class BookingMail extends Mailable
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $qr_code)
     {
         $this->name = $user->name;
+        $this->qr_code = $qr_code;
     }
 
     /**
@@ -29,6 +31,6 @@ class BookingMail extends Mailable
     {
         return $this->subject("【Rese】ご予約ありがとうございます。")
         ->view("emails.mail")
-        ->with(["name" => $this->name]);
+        ->with(["name" => $this->name, "qr_code" => $this->qr_code]);
     }
 }
