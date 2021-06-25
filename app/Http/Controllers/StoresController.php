@@ -55,9 +55,8 @@ class StoresController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "item" => $item,
-                "message" => "Favorite Not found"
-            ], 200);
+                "message" => "Data Not found"
+            ], 404);
         }
     }
 
