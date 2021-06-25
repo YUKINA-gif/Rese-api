@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingMail;
 use App\Mail\BookingCancelMail;
 use App\Models\User;
-use Illuminate\Support\Str;
 
 /**
  * [API]予約機能API class
