@@ -21,7 +21,6 @@ class CreateBookingsTable extends Migration
             $table->date("booking_date");
             $table->time("booking_time");
             $table->integer("booking_number");
-            $table->uuid("qrcode")->unique();
             $table->timestamps();
         });
     }

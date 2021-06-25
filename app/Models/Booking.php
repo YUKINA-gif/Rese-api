@@ -20,8 +20,7 @@ class Booking extends Model
         "user_id",
         "booking_date",
         "booking_time",
-        "booking_number",
-        "qrcode",
+        "booking_number"
     ];
 
     public function user()
