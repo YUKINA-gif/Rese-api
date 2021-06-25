@@ -41,25 +41,50 @@ class EvaluationsController extends Controller
             "evaluation" => ["required"],
         ]);
 
-        $evaluation = new Evaluation;
+        // データがあるか調べる
+        $search_evaluation =
+            Evaluation::where("id", $request->id)->where('user_id', $request->user_id)->first();
 
-        $result = $evaluation->fill([
-            "user_id" => $request->user_id,
-            "store_id" => $request->store_id,
-            "evaluation" => $request->evaluation,
-            "created_at" => $now,
-            "updated_at" => $now,
-        ])->save();
+        // なければ登録
+        if (!$search_evaluation) {
 
-        if ($result) {
-            return response()->json([
-                "message" => "Evaluated successfully"
-            ], 200);
+            $evaluation = new Evaluation;
+
+            $result = $evaluation->fill([
+                "user_id" => $request->user_id,
+                "store_id" => $request->store_id,
+                "evaluation" => $request->evaluation,
+                "created_at" => $now,
+                "updated_at" => $now,
+            ])->save();
+
+            if ($result) {
+                return response()->json([
+                    "message" => "Evaluated successfully"
+                ], 200);
+            } else {
+                return response()->json([
+                    "message" => "Not found"
+                ], 404);
+            }
+            // あれば評価更新
         } else {
-            return response()->json([
-                "message" => "Not found"
-            ], 404);
-        }
 
+            $param = [
+                "evaluation" => $request->evaluation,
+            ];
+
+            $evaluation = $search_evaluation->update($param);
+            
+            if ($evaluation) {
+                return response()->json([
+                    "message" => "Evaluation updated successfully"
+                ], 200);
+            } else {
+                return response()->json([
+                    "message" => "Not found"
+                ], 404);
+            }
+        }
     }
 }
