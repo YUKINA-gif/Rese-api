@@ -37,7 +37,7 @@ Route::get("/booking", [BookingController::class, "get_all_bookings"]);
 Route::post("/booking", [BookingController::class, "post"]);
 Route::put("/booking", [BookingController::class, "put"]);
 Route::delete("/booking", [BookingController::class, "delete"]);
-Route::post("/evaluation",[EvaluationsController::class,"post"]);
+Route::post("/evaluation", [EvaluationsController::class, "post"]);
 
 // 店舗代表者用API
 Route::post("/stores", [StoresController::class, "post"]);

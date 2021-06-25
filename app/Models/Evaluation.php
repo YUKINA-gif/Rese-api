@@ -13,6 +13,7 @@ class Evaluation extends Model
         "store_id",
         "user_id",
         "evaluation",
+        "id"
     ];
 
     public function user()
@@ -23,10 +24,5 @@ class Evaluation extends Model
     public function store()
     {
         return $this->belongsTo(Store::class);
-    }
-
-    public function getEval()
-    {
-        return $this->reviews()->avg("evaluation");
     }
 }
