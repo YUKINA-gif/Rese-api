@@ -75,20 +75,20 @@ class BookingController extends Controller
         ]);
 
         $booking = new Booking;
-        
+
         $result = $booking->fill([
             "user_id" => $request->user_id,
             "store_id" => $request->store_id,
             "booking_date" => $request->booking_date,
             "booking_time" => $request->booking_time,
             "booking_number" => $request->booking_number,
-            "qrcode" =>(string)Str::uuid(),
+            "qrcode" => (string)Str::uuid(),
             "created_at" => $now,
             "updated_at" => $now,
         ])->save();
 
-        if($result){
-            $user = User::where("id",$request->user_id)->first();
+        if ($result) {
+            $user = User::where("id", $request->user_id)->first();
             Mail::to($user->email)->send(new BookingMail($user));
 
             return response()->json([
