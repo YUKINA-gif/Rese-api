@@ -10,8 +10,6 @@ use App\Mail\BookingMail;
 use App\Mail\BookingCancelMail;
 use App\Models\User;
 use Illuminate\Support\Str;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
 
 /**
  * [API]予約機能API class
@@ -60,7 +58,6 @@ class BookingController extends Controller
      * @access public
      * @param Request $request リクエストパラメータ
      * @return Response 予約登録
-     * @var timestamps $now  登録日時
      * @var array $booking  新規レコード
      * @var timestamps $now  現在日時
      */
@@ -91,14 +88,17 @@ class BookingController extends Controller
         ])->save();
 
         if($result){
-            $qrcode = $booking->qrcode;
-            QrCode::format('png')->generate(url("/qr/" . $qrcode));
             $user = User::where("id",$request->user_id)->first();
-            Mail::to($user->email)->send(new BookingMail($user,$qrcode));
+            Mail::to($user->email)->send(new BookingMail($user));
+
+            return response()->json([
+                "message" => "Booking successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
         }
-        return response()->json([
-            "message" => "Booking successfully"
-        ], 200);
     }
 
     /**

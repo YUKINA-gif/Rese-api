@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function eval()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
 }

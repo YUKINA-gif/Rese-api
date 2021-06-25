@@ -16,10 +16,9 @@ class BookingMail extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $qr_code)
+    public function __construct($user)
     {
         $this->name = $user->name;
-        $this->qr_code = $qr_code;
     }
 
     /**
@@ -31,6 +30,6 @@ class BookingMail extends Mailable
     {
         return $this->subject("【Rese】ご予約ありがとうございます。")
         ->view("emails.mail")
-        ->with(["name" => $this->name, "qr_code" => $this->qr_code]);
+        ->with(["name" => $this->name]);
     }
 }
