@@ -55,7 +55,7 @@ class StoresController extends Controller
             ], 200);
         } else {
             return response()->json([
-                "message" => "Data Not found"
+                "message" => "Not found"
             ], 404);
         }
     }
