@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingMail;
 use App\Mail\BookingCancelMail;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 /**
  * [API]予約機能API class
@@ -57,7 +58,6 @@ class BookingController extends Controller
      * @access public
      * @param Request $request リクエストパラメータ
      * @return Response 予約登録
-     * @var timestamps $now  登録日時
      * @var array $booking  新規レコード
      * @var timestamps $now  現在日時
      */
@@ -75,24 +75,30 @@ class BookingController extends Controller
         ]);
 
         $booking = new Booking;
-        
+
         $result = $booking->fill([
             "user_id" => $request->user_id,
             "store_id" => $request->store_id,
             "booking_date" => $request->booking_date,
             "booking_time" => $request->booking_time,
             "booking_number" => $request->booking_number,
+            "qrcode" => (string)Str::uuid(),
             "created_at" => $now,
             "updated_at" => $now,
         ])->save();
 
-        if($result){
-            $user = User::where("id",$request->user_id)->first();
+        if ($result) {
+            $user = User::where("id", $request->user_id)->first();
             Mail::to($user->email)->send(new BookingMail($user));
+
+            return response()->json([
+                "message" => "Booking successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "Not found"
+            ], 404);
         }
-        return response()->json([
-            "message" => "Booking successfully"
-        ], 200);
     }
 
     /**
