@@ -2,6 +2,10 @@
 
 ある企業のグループ会社による飲食店予約サービスの API です
 
+## API Document
+
+APIドキュメントは[こちら](https://rese-apidocument.netlify.app)
+
 ## Prerequisites
 
 -   PHP 7.4.15
@@ -232,10 +236,33 @@ DB_DATABASE=rese
 DB_USERNAME=root
 DB_PASSWORD=MySQLログイン用パスワード
 ```
+メール機能もあるため下記も設定します。
+今回はGmailを使用しております。
 
-キーを発行するため下記コマンドを入力します。
+Googleアカウントを作成し、
+[こちら](https://support.google.com/accounts/answer/185839?co=GENIE.Platform%3DDesktop&hl=ja&authuser=1)からまず2 段階認証プロセスを有効にします。
+
+その後、アカウントをクリックし"Google アカウントを管理"をクリックします。
+"セキュリティ"をクリックし"アプリパスワード"を選択します。
+パスワードを求められるので入力しアプリパスワードの画面にいきます。
+
+アプリを選択 > メール
+デバイスを選択 > その他 > アプリの名前を入力し"生成"をクリック。
+アプリパスワードが表示されるのでメモし、下記MAIL_PASSWORD=欄に貼り付けます。
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=作成したメールアドレス(例:test@gmail.com)
+MAIL_PASSWORD=発行したパスワード
+MAIL_ENCRYPTION=tls
+MAIL_FROM_NAME="Rese"
+```
+
+キャッシュをクリアし、キーを発行するため下記コマンドを入力します。
 
 ```
+$ php artisan config clear
 $ php artisan key:generate
 ```
 
@@ -245,9 +272,9 @@ $ php artisan key:generate
 $ php artisan migrate
 
 $ php artisan db:seed --class=StoreSeeder
+$ php artisan db:seed --class=AreaSeeder
+$ php artisan db:seed --class=GenreSeeder
 ```
-
-Do you really wish to run this command? (yes/no)と聞かれるのでyesと入力し、Enterキーをクリック。
 
 店舗情報を取得し、正常に動作するか確認します。
 
