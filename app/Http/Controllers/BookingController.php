@@ -64,7 +64,7 @@ class BookingController extends Controller
         $request->validate([
             "user_id" => ["required"],
             "store_id" => ["required"],
-            "booking_date" => ["required", "date", "after:tomorrow"],
+            "booking_date" => ["required", "date", "after:now"],
             "booking_time" => ["required",],
             "booking_number" => ["required", "numeric"],
         ]);
