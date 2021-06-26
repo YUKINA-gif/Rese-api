@@ -97,6 +97,15 @@ class BookingController extends Controller
      */
     public function put(Request $request)
     {
+        // バリデーション設定
+        $request->validate([
+            "user_id" => ["required"],
+            "store_id" => ["required"],
+            "booking_date" => ["required", "date", "after:now"],
+            "booking_time" => ["required",],
+            "booking_number" => ["required", "numeric"],
+        ]);
+
         $param = [
             "booking_date" => $request->booking_date,
             "booking_time" => $request->booking_time,
@@ -106,8 +115,7 @@ class BookingController extends Controller
 
         if ($booking) {
             return response()->json([
-                "message" => "Booking updated successfully",
-                "data" => $request
+                "message" => "Booking updated successfully"
             ], 200);
         } else {
             return response()->json([
