@@ -28,11 +28,6 @@ class Store extends Model
         return $this->hasMany(Booking::class);
     }
 
-    public function evals()
-    {
-        return $this->hasMany(Evaluation::class);
-    }
-
     protected $hidden = [
         "created_at",
         'updated_at',
@@ -45,6 +40,4 @@ class Store extends Model
         "area_id",
         "genre_id"
     ];
-
-    
 }

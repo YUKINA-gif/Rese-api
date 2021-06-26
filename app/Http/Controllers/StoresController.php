@@ -37,7 +37,7 @@ class StoresController extends Controller
      */
     public function get(Request $request)
     {
-        $stores = Store::with("area", "genre", "evals:store_id,evaluation")->with("favorites", function ($q) use ($request) {
+        $stores = Store::with("area", "genre")->with("favorites", function ($q) use ($request) {
             $q->where("user_id", $request->user_id);
         })->get();
         $area = Area::get();
